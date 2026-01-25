@@ -1,0 +1,76 @@
+---
+title: Components Overview
+description: Explore all the available MDX components for your documentation
+---
+
+Our documentation platform includes a rich set of components to make your docs interactive and beautiful.
+
+## Component Categories
+
+<CardGroup cols={3}>
+  <Card title="Callouts" href="/docs/components/callouts" icon="AlertCircle">
+    Highlight important information with styled alerts.
+  </Card>
+  <Card title="Code Blocks" href="/docs/components/code-blocks" icon="Code">
+    Display code with syntax highlighting.
+  </Card>
+  <Card title="Tabs" href="/docs/components/tabs" icon="Columns">
+    Organize content into switchable views.
+  </Card>
+  <Card title="Accordions" href="/docs/components/accordions" icon="ChevronDown">
+    Collapsible content sections.
+  </Card>
+  <Card title="Cards" href="/docs/components/cards" icon="LayoutGrid">
+    Linked content cards and groups.
+  </Card>
+  <Card title="Steps" href="/docs/components/tabs" icon="ListOrdered">
+    Sequential instruction guides.
+  </Card>
+</CardGroup>
+
+## Using Components
+
+All components are available globally in your MDX files. Simply use them like HTML tags:
+
+```mdx
+<Tip>
+  This is a helpful tip for your readers!
+</Tip>
+
+<Card title="Learn More" href="/docs/guides">
+  Check out our guides for more information.
+</Card>
+```
+
+<Info>
+  Components automatically adapt to light and dark modes, so you don't need to worry about styling.
+</Info>
+
+## Component Props
+
+Each component accepts specific props to customize its behavior. Check the individual component pages for detailed documentation.
+
+### Example: Callout Component
+
+```mdx
+<Callout type="warning" title="Custom Title">
+  This is a warning callout with a custom title.
+</Callout>
+```
+
+Renders as:
+
+<Callout type="warning" title="Custom Title">
+  This is a warning callout with a custom title.
+</Callout>
+
+## Best Practices
+
+1. **Use semantic components** - Choose the right component for your content type
+2. **Don't overuse** - Too many callouts or cards can overwhelm readers
+3. **Keep content focused** - Each component should serve a clear purpose
+4. **Test in both themes** - Verify your components look good in light and dark mode
+
+<Note>
+  All components are designed to be accessible and work with screen readers.
+</Note>

@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light mode colors - RGB values for opacity support */
+    --background: 255 255 255;
+    --background-soft: 248 250 252;
+    --background-muted: 241 245 249;
+    --foreground: 15 23 42;
+    --foreground-muted: 71 85 105;
+    --foreground-soft: 148 163 184;
+    --border: 226 232 240;
+    --border-soft: 241 245 249;
+    --primary: 24 226 153;
+  }
+
+  .dark {
+    /* Dark mode colors - RGB values for opacity support */
+    --background: 10 10 11;
+    --background-soft: 17 17 19;
+    --background-muted: 24 24 27;
+    --foreground: 250 250 250;
+    --foreground-muted: 161 161 170;
+    --foreground-soft: 113 113 122;
+    --border: 39 39 42;
+    --border-soft: 24 24 27;
+    --primary: 24 226 153;
+  }
+
+  * {
+    border-color: rgb(var(--border));
+  }
+
+  html {
+    @apply antialiased scroll-smooth;
+  }
+
+  body {
+    background-color: rgb(var(--background));
+    color: rgb(var(--foreground));
+    @apply font-sans;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--border));
+    @apply rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(var(--foreground-soft));
+  }
+
+  /* Selection */
+  ::selection {
+    background-color: rgb(var(--primary) / 0.2);
+    color: rgb(var(--foreground));
+  }
+}
+
+@layer components {
+  /* Prose adjustments */
+  .prose {
+    --tw-prose-body: rgb(var(--foreground));
+    --tw-prose-headings: rgb(var(--foreground));
+    --tw-prose-links: rgb(var(--primary));
+    --tw-prose-bold: rgb(var(--foreground));
+    --tw-prose-counters: rgb(var(--foreground-muted));
+    --tw-prose-bullets: rgb(var(--foreground-soft));
+    --tw-prose-hr: rgb(var(--border));
+    --tw-prose-quotes: rgb(var(--foreground));
+    --tw-prose-quote-borders: rgb(var(--primary));
+    --tw-prose-captions: rgb(var(--foreground-muted));
+    --tw-prose-code: rgb(var(--foreground));
+    --tw-prose-pre-code: rgb(var(--foreground));
+    --tw-prose-pre-bg: rgb(var(--background-soft));
+    --tw-prose-th-borders: rgb(var(--border));
+    --tw-prose-td-borders: rgb(var(--border-soft));
+  }
+
+  /* Code block styles */
+  .code-block {
+    @apply relative rounded-xl overflow-hidden;
+  }
+
+  .code-block pre {
+    @apply p-4 overflow-x-auto text-sm leading-relaxed;
+  }
+
+  .code-block code {
+    @apply font-mono text-[13px];
+  }
+
+  /* Sidebar link */
+  .sidebar-link {
+    @apply flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors duration-150;
+    color: rgb(var(--foreground-muted));
+  }
+
+  .sidebar-link:hover {
+    color: rgb(var(--foreground));
+    background-color: rgb(var(--background-muted));
+  }
+
+  .sidebar-link.active {
+    color: rgb(var(--primary));
+    background-color: rgb(var(--primary) / 0.1);
+    @apply font-medium;
+  }
+
+  /* TOC link */
+  .toc-link {
+    @apply block py-1.5 text-sm transition-colors duration-150;
+    color: rgb(var(--foreground-soft));
+  }
+
+  .toc-link:hover {
+    color: rgb(var(--foreground));
+  }
+
+  .toc-link.active {
+    color: rgb(var(--primary));
+    @apply font-medium;
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply backdrop-blur-xl;
+    background-color: rgb(var(--background) / 0.8);
+    border-color: rgb(var(--border));
+  }
+
+  /* Card hover */
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar */
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Focus ring */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    --tw-ring-color: rgb(var(--primary) / 0.5);
+  }
+
+  /* Background utilities */
+  .bg-background {
+    background-color: rgb(var(--background));
+  }
+
+  .bg-background-soft {
+    background-color: rgb(var(--background-soft));
+  }
+
+  .bg-background-muted {
+    background-color: rgb(var(--background-muted));
+  }
+
+  /* Text utilities */
+  .text-foreground {
+    color: rgb(var(--foreground));
+  }
+
+  .text-foreground-muted {
+    color: rgb(var(--foreground-muted));
+  }
+
+  .text-foreground-soft {
+    color: rgb(var(--foreground-soft));
+  }
+
+  /* Border utilities */
+  .border-border {
+    border-color: rgb(var(--border));
+  }
+
+  .border-border-soft {
+    border-color: rgb(var(--border-soft));
+  }
+}

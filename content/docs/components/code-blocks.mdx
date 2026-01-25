@@ -1,0 +1,152 @@
+---
+title: Code Blocks
+description: Display code with syntax highlighting and copy functionality
+---
+
+Code blocks are essential for technical documentation. Our platform provides beautiful syntax highlighting for dozens of languages.
+
+## Basic Code Blocks
+
+Use triple backticks with a language identifier:
+
+~~~mdx
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+```
+~~~
+
+Renders as:
+
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+```
+
+## Supported Languages
+
+Code blocks support syntax highlighting for many languages including:
+
+- JavaScript / TypeScript
+- Python
+- Go
+- Rust
+- Java
+- Ruby
+- PHP
+- Shell / Bash
+- HTML / CSS
+- JSON / YAML
+- And many more!
+
+## Examples
+
+### TypeScript
+
+```typescript
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+async function getUser(id: string): Promise<User> {
+  const response = await fetch(`/api/users/${id}`);
+  return response.json();
+}
+```
+
+### Python
+
+```python
+from dataclasses import dataclass
+from typing import List
+
+@dataclass
+class User:
+    id: str
+    name: str
+    email: str
+
+def get_users() -> List[User]:
+    return [
+        User(id="1", name="Alice", email="alice@example.com"),
+        User(id="2", name="Bob", email="bob@example.com"),
+    ]
+```
+
+### Shell
+
+```bash
+# Install dependencies
+pnpm install
+
+# Run development server
+pnpm dev
+
+# Build for production
+pnpm build
+```
+
+### JSON
+
+```json
+{
+  "name": "my-docs",
+  "version": "1.0.0",
+  "dependencies": {
+    "next": "^14.0.0",
+    "react": "^18.0.0"
+  }
+}
+```
+
+## Code Groups
+
+Show the same code in multiple languages with tabs:
+
+<CodeGroup>
+```javascript title="JavaScript"
+const greeting = "Hello, World!";
+console.log(greeting);
+```
+
+```python title="Python"
+greeting = "Hello, World!"
+print(greeting)
+```
+
+```go title="Go"
+package main
+
+import "fmt"
+
+func main() {
+    greeting := "Hello, World!"
+    fmt.Println(greeting)
+}
+```
+</CodeGroup>
+
+## Inline Code
+
+Use single backticks for inline code: `const x = 42`
+
+This is useful for mentioning `variables`, `function names`, or `file.names` within text.
+
+## Copy Button
+
+All code blocks include a copy button that appears on hover. Click it to copy the code to your clipboard.
+
+<Tip>
+  The copy button appears in the top-right corner when you hover over a code block.
+</Tip>
+
+## Best Practices
+
+1. **Always specify the language** - This enables proper syntax highlighting
+2. **Keep examples focused** - Show only the relevant code
+3. **Add comments** - Help readers understand complex code
+4. **Use code groups** - When showing the same concept in multiple languages

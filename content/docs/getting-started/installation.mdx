@@ -1,0 +1,168 @@
+---
+title: Installation
+description: Detailed installation instructions and requirements
+---
+
+This guide covers all the ways to install and set up your documentation site.
+
+## System Requirements
+
+| Requirement | Minimum | Recommended |
+|-------------|---------|-------------|
+| Node.js | 18.x | 20.x or later |
+| Memory | 4GB RAM | 8GB RAM |
+| Disk Space | 500MB | 1GB |
+
+## Installation Methods
+
+### Using Create Script (Recommended)
+
+The fastest way to get started:
+
+```bash
+pnpm create docs-site my-documentation
+```
+
+This will:
+1. Create a new directory
+2. Initialize the project structure
+3. Install all dependencies
+4. Set up default configuration
+
+### Manual Installation
+
+If you prefer more control, you can set up manually:
+
+<Steps>
+  <Step title="Create project directory">
+    ```bash
+    mkdir my-docs && cd my-docs
+    pnpm init
+    ```
+  </Step>
+
+  <Step title="Install dependencies">
+    ```bash
+    pnpm add next react react-dom @next/mdx @mdx-js/loader @mdx-js/react
+    pnpm add -D typescript @types/node @types/react tailwindcss
+    ```
+  </Step>
+
+  <Step title="Configure Next.js">
+    Create `next.config.mjs`:
+
+    ```javascript
+    import createMDX from '@next/mdx';
+
+    const withMDX = createMDX({
+      options: {
+        remarkPlugins: [],
+        rehypePlugins: [],
+      },
+    });
+
+    export default withMDX({
+      pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+    });
+    ```
+  </Step>
+
+  <Step title="Set up Tailwind CSS">
+    Initialize Tailwind and configure your styles:
+
+    ```bash
+    pnpm dlx tailwindcss init -p
+    ```
+  </Step>
+</Steps>
+
+### Using Docker
+
+For containerized environments:
+
+```dockerfile
+FROM node:20-alpine
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable && pnpm install --frozen-lockfile
+COPY . .
+RUN pnpm build
+EXPOSE 3000
+CMD ["pnpm", "start"]
+```
+
+Build and run:
+
+```bash
+docker build -t my-docs .
+docker run -p 3000:3000 my-docs
+```
+
+## Verifying Installation
+
+After installation, verify everything works:
+
+```bash
+pnpm dev
+```
+
+You should see output like:
+
+```
+▲ Next.js 14.x
+- Local:        http://localhost:3000
+- Ready in 2.3s
+```
+
+<Success>
+  If you see this output, your installation is complete!
+</Success>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Node.js version errors">
+    If you see errors about Node.js version, make sure you're using Node.js 18 or later:
+
+    ```bash
+    node --version
+    ```
+
+    Use [nvm](https://github.com/nvm-sh/nvm) to manage Node.js versions:
+
+    ```bash
+    nvm install 20
+    nvm use 20
+    ```
+  </Accordion>
+
+  <Accordion title="pnpm not found">
+    If pnpm isn't installed, enable it with corepack:
+
+    ```bash
+    corepack enable
+    corepack prepare pnpm@latest --activate
+    ```
+  </Accordion>
+
+  <Accordion title="Build errors with MDX">
+    Make sure your MDX files have valid frontmatter:
+
+    ```mdx
+    ---
+    title: Page Title
+    description: Page description
+    ---
+
+    Your content here...
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup>
+  <Card title="Configuration" href="/docs/guides/customization" icon="Settings">
+    Learn how to customize your documentation site.
+  </Card>
+</CardGroup>

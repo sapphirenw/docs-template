@@ -1,0 +1,129 @@
+---
+title: Quickstart
+description: Get your documentation site up and running in minutes
+---
+
+This guide will help you set up your first documentation site in just a few minutes.
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- Node.js 18+ installed
+- A package manager (npm, pnpm, or yarn)
+- A text editor or IDE
+
+<Note>
+  We recommend using [VS Code](https://code.visualstudio.com/) with the MDX extension for the best editing experience.
+</Note>
+
+## Installation
+
+<Tabs defaultValue="pnpm">
+  <TabList>
+    <TabTrigger value="pnpm">pnpm</TabTrigger>
+    <TabTrigger value="npm">npm</TabTrigger>
+    <TabTrigger value="yarn">yarn</TabTrigger>
+  </TabList>
+  <Tab value="pnpm">
+    ```bash
+    pnpm create docs-site my-docs
+    cd my-docs
+    pnpm install
+    ```
+  </Tab>
+  <Tab value="npm">
+    ```bash
+    npx create-docs-site my-docs
+    cd my-docs
+    npm install
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn create docs-site my-docs
+    cd my-docs
+    yarn install
+    ```
+  </Tab>
+</Tabs>
+
+## Project Structure
+
+After initialization, your project will look like this:
+
+```
+my-docs/
+├── content/
+│   └── docs/
+│       ├── getting-started/
+│       │   └── introduction.mdx
+│       └── guides/
+│           └── first-doc.mdx
+├── docs.config.json
+├── package.json
+└── next.config.mjs
+```
+
+## Configuration
+
+The `docs.config.json` file controls your site's navigation and appearance:
+
+```json
+{
+  "name": "My Documentation",
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": [
+        "getting-started/introduction",
+        "getting-started/quickstart"
+      ]
+    }
+  ]
+}
+```
+
+<Warning>
+  Make sure all paths in the navigation array correspond to actual MDX files in your `content/docs` directory.
+</Warning>
+
+## Writing Your First Page
+
+Create a new MDX file in the `content/docs` directory:
+
+```mdx
+---
+title: My First Page
+description: This is my first documentation page
+---
+
+# Hello World
+
+Welcome to my documentation!
+
+<Tip>
+  You can use MDX components anywhere in your content.
+</Tip>
+```
+
+## Running Locally
+
+Start the development server:
+
+```bash
+pnpm dev
+```
+
+Your site will be available at `http://localhost:3000`.
+
+## What's Next?
+
+<CardGroup cols={2}>
+  <Card title="Installation" href="/docs/getting-started/installation" icon="Download">
+    Learn about advanced installation options.
+  </Card>
+  <Card title="Components" href="/docs/components/overview" icon="Blocks">
+    Explore the available MDX components.
+  </Card>
+</CardGroup>

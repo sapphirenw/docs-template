@@ -1,0 +1,262 @@
+---
+title: Deployment
+description: Deploy your documentation site to production
+---
+
+This guide covers deploying your documentation site to various hosting platforms.
+
+## Build for Production
+
+First, create an optimized production build:
+
+```bash
+pnpm build
+```
+
+This generates static HTML and optimized assets in the `.next` directory.
+
+<Note>
+  The build process will fail if there are TypeScript errors or broken links. Fix any issues before deploying.
+</Note>
+
+## Deployment Options
+
+### Vercel (Recommended)
+
+Vercel is the easiest option for Next.js projects:
+
+<Steps>
+  <Step title="Push to Git">
+    Ensure your code is in a Git repository (GitHub, GitLab, or Bitbucket).
+  </Step>
+
+  <Step title="Import to Vercel">
+    Go to [vercel.com](https://vercel.com) and click "Import Project". Select your repository.
+  </Step>
+
+  <Step title="Configure">
+    Vercel auto-detects Next.js settings. Just confirm and deploy.
+  </Step>
+
+  <Step title="Done!">
+    Your site is live with automatic HTTPS and a `.vercel.app` domain.
+  </Step>
+</Steps>
+
+<Tip>
+  Enable automatic deployments to update your docs on every push to the main branch.
+</Tip>
+
+### Netlify
+
+<Steps>
+  <Step title="Create netlify.toml">
+    Add a configuration file to your project root:
+
+    ```toml
+    [build]
+      command = "pnpm build"
+      publish = ".next"
+
+    [[plugins]]
+      package = "@netlify/plugin-nextjs"
+    ```
+  </Step>
+
+  <Step title="Deploy">
+    Connect your repository to Netlify or use the CLI:
+
+    ```bash
+    netlify deploy --prod
+    ```
+  </Step>
+</Steps>
+
+### Docker
+
+Create a Dockerfile for containerized deployments:
+
+```dockerfile
+FROM node:20-alpine AS builder
+WORKDIR /app
+RUN corepack enable
+
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+COPY . .
+RUN pnpm build
+
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+
+EXPOSE 3000
+CMD ["node", "server.js"]
+```
+
+Update `next.config.mjs` for standalone output:
+
+```javascript
+const nextConfig = {
+  output: 'standalone',
+  // ...
+};
+```
+
+Build and run:
+
+```bash
+docker build -t my-docs .
+docker run -p 3000:3000 my-docs
+```
+
+### Static Export
+
+For static hosting (GitHub Pages, S3, etc.), enable static export:
+
+```javascript
+// next.config.mjs
+const nextConfig = {
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+};
+```
+
+Then build:
+
+```bash
+pnpm build
+```
+
+The `out` directory contains your static site.
+
+<Warning>
+  Static export doesn't support dynamic features like API routes or incremental static regeneration.
+</Warning>
+
+## Environment Variables
+
+### Build-time Variables
+
+Create `.env.production`:
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://docs.example.com
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+```
+
+<Danger>
+  Never commit secrets to version control. Use your platform's environment variable settings for sensitive values.
+</Danger>
+
+### Platform Configuration
+
+<Tabs defaultValue="vercel">
+  <TabList>
+    <TabTrigger value="vercel">Vercel</TabTrigger>
+    <TabTrigger value="netlify">Netlify</TabTrigger>
+    <TabTrigger value="docker">Docker</TabTrigger>
+  </TabList>
+  <Tab value="vercel">
+    Set environment variables in the Vercel dashboard under Project Settings → Environment Variables.
+  </Tab>
+  <Tab value="netlify">
+    Set environment variables in Site Settings → Build & Deploy → Environment.
+  </Tab>
+  <Tab value="docker">
+    Pass environment variables at runtime:
+
+    ```bash
+    docker run -e NEXT_PUBLIC_SITE_URL=https://docs.example.com my-docs
+    ```
+  </Tab>
+</Tabs>
+
+## Custom Domains
+
+### Vercel
+
+1. Go to Project Settings → Domains
+2. Add your domain
+3. Update DNS records as instructed
+
+### Netlify
+
+1. Go to Site Settings → Domain Management
+2. Add custom domain
+3. Configure DNS
+
+### General DNS Setup
+
+Add these DNS records:
+
+| Type | Name | Value |
+|------|------|-------|
+| A | @ | Platform IP |
+| CNAME | www | Your platform domain |
+
+<Info>
+  DNS changes can take up to 48 hours to propagate, though usually much faster.
+</Info>
+
+## CI/CD
+
+### GitHub Actions
+
+```yaml
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install
+      - run: pnpm build
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: --prod
+```
+
+## Post-Deployment
+
+<CardGroup cols={2}>
+  <Card title="Verify Links" icon="Link">
+    Check that all internal and external links work correctly.
+  </Card>
+  <Card title="Test Search" icon="Search">
+    Ensure search indexes your content properly.
+  </Card>
+  <Card title="Check Analytics" icon="BarChart">
+    Set up analytics to track documentation usage.
+  </Card>
+  <Card title="Monitor Performance" icon="Gauge">
+    Use Lighthouse to check Core Web Vitals.
+  </Card>
+</CardGroup>

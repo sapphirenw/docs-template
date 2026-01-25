@@ -1,0 +1,139 @@
+---
+title: Cards
+description: Create linked content cards and grid layouts
+---
+
+Cards are versatile components for creating navigation links, feature highlights, and content organization.
+
+## Basic Card
+
+```mdx
+<Card title="Getting Started" href="/docs/getting-started/introduction">
+  Learn the basics of setting up your documentation.
+</Card>
+```
+
+<Card title="Getting Started" href="/docs/getting-started/introduction">
+  Learn the basics of setting up your documentation.
+</Card>
+
+## Card with Icon
+
+Add an icon to make cards more visually distinct:
+
+```mdx
+<Card title="Components" href="/docs/components/overview" icon="Blocks">
+  Explore all available MDX components.
+</Card>
+```
+
+<Card title="Components" href="/docs/components/overview" icon="Blocks">
+  Explore all available MDX components.
+</Card>
+
+## Available Icons
+
+Cards use icons from [Lucide](https://lucide.dev/icons). Some commonly used icons:
+
+- `Rocket` - Getting started, launches
+- `Book` - Documentation, guides
+- `Code` - Code examples, development
+- `Settings` - Configuration
+- `Blocks` - Components, modules
+- `Zap` - Performance, speed
+- `Shield` - Security
+- `Download` - Installation, downloads
+
+<Tip>
+  Browse all available icons at [lucide.dev/icons](https://lucide.dev/icons). Use the icon name exactly as shown (PascalCase).
+</Tip>
+
+## Card Groups
+
+Organize cards in responsive grids:
+
+```mdx
+<CardGroup cols={2}>
+  <Card title="Card 1" icon="Star">Description 1</Card>
+  <Card title="Card 2" icon="Heart">Description 2</Card>
+</CardGroup>
+```
+
+### Two Columns (Default)
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" href="/docs/getting-started/quickstart" icon="Rocket">
+    Get up and running in minutes.
+  </Card>
+  <Card title="Installation" href="/docs/getting-started/installation" icon="Download">
+    Detailed installation instructions.
+  </Card>
+</CardGroup>
+
+### Three Columns
+
+<CardGroup cols={3}>
+  <Card title="Callouts" href="/docs/components/callouts" icon="AlertCircle">
+    Highlight important information.
+  </Card>
+  <Card title="Code Blocks" href="/docs/components/code-blocks" icon="Code">
+    Display code with highlighting.
+  </Card>
+  <Card title="Tabs" href="/docs/components/tabs" icon="Columns">
+    Organize content in tabs.
+  </Card>
+</CardGroup>
+
+### Single Column
+
+<CardGroup cols={1}>
+  <Card title="Full Width Card" icon="Maximize">
+    This card spans the full width of the content area. Useful for important callouts or when you have longer descriptions.
+  </Card>
+</CardGroup>
+
+## Cards Without Links
+
+Cards without `href` don't have hover effects and aren't clickable:
+
+<CardGroup cols={2}>
+  <Card title="Feature One" icon="Star">
+    This is a static card that provides information but doesn't link anywhere.
+  </Card>
+  <Card title="Feature Two" icon="Sparkles">
+    Another static card for displaying content without navigation.
+  </Card>
+</CardGroup>
+
+## Props
+
+### Card
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | Required | The card title |
+| `description` | `string` | - | Short description text |
+| `href` | `string` | - | Link destination (makes card clickable) |
+| `icon` | `string` | - | Lucide icon name |
+| `children` | `ReactNode` | - | Card content |
+
+### CardGroup
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `cols` | `1 \| 2 \| 3` | `2` | Number of columns |
+| `children` | `ReactNode` | Required | Card components |
+
+## Use Cases
+
+- **Navigation** - Link to related pages and sections
+- **Features** - Highlight product or project features
+- **Resources** - Link to external resources or downloads
+- **Quick Links** - Provide shortcuts to common destinations
+
+## Best Practices
+
+1. **Keep titles concise** - 2-4 words work best
+2. **Use consistent icons** - Choose a cohesive icon style
+3. **Write actionable descriptions** - Tell users what they'll learn or do
+4. **Group related cards** - Cards in a group should be thematically related

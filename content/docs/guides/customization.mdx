@@ -1,0 +1,286 @@
+---
+title: Customization
+description: Learn how to customize the look and feel of your documentation
+---
+
+This guide covers all the ways you can customize your documentation site to match your brand.
+
+## Configuration File
+
+The main configuration is in `docs.config.json`:
+
+```json
+{
+  "name": "My Documentation",
+  "description": "Documentation for my project",
+  "logo": {
+    "light": "/logo-light.svg",
+    "dark": "/logo-dark.svg"
+  },
+  "colors": {
+    "primary": "#18E299",
+    "accent": "#0d9373"
+  },
+  "navigation": [...],
+  "topbarLinks": [...],
+  "footerSocials": {...}
+}
+```
+
+## Colors
+
+### Primary Color
+
+The primary color is used for:
+- Links and buttons
+- Active navigation states
+- Accent highlights
+- Focus rings
+
+To change it, update the `colors.primary` value:
+
+```json
+{
+  "colors": {
+    "primary": "#3B82F6"
+  }
+}
+```
+
+### Tailwind Configuration
+
+For more control, edit `tailwind.config.ts`:
+
+```typescript
+theme: {
+  extend: {
+    colors: {
+      primary: {
+        50: '#eff6ff',
+        100: '#dbeafe',
+        // ... add all shades
+        500: '#3b82f6',
+        600: '#2563eb',
+        // ...
+      },
+    },
+  },
+},
+```
+
+<Tip>
+  Use tools like [UI Colors](https://uicolors.app) to generate a complete color palette from a single color.
+</Tip>
+
+## Typography
+
+### Fonts
+
+The default fonts are Inter (sans-serif) and JetBrains Mono (monospace). To change them:
+
+1. Update the font imports in `src/app/layout.tsx`:
+
+```typescript
+import { Poppins, Fira_Code } from 'next/font/google';
+
+const sans = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-sans',
+});
+
+const mono = Fira_Code({
+  subsets: ['latin'],
+  variable: '--font-mono',
+});
+```
+
+2. Update `tailwind.config.ts`:
+
+```typescript
+fontFamily: {
+  sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+  mono: ['var(--font-mono)', 'monospace'],
+},
+```
+
+## Logo
+
+Add your logo files to the `public` directory:
+
+```
+public/
+├── logo-light.svg  # For light mode
+└── logo-dark.svg   # For dark mode
+```
+
+Then update the config:
+
+```json
+{
+  "logo": {
+    "light": "/logo-light.svg",
+    "dark": "/logo-dark.svg"
+  }
+}
+```
+
+<Note>
+  If you only have one logo that works on both backgrounds, use the same path for both.
+</Note>
+
+## Navigation
+
+### Structure
+
+Navigation is organized into groups:
+
+```json
+{
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": [
+        "getting-started/introduction",
+        "getting-started/quickstart"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        "api/authentication",
+        "api/endpoints"
+      ]
+    }
+  ]
+}
+```
+
+### Topbar Links
+
+Add external links to the header:
+
+```json
+{
+  "topbarLinks": [
+    {
+      "name": "GitHub",
+      "url": "https://github.com/your-org/your-repo"
+    },
+    {
+      "name": "Discord",
+      "url": "https://discord.gg/your-server"
+    }
+  ]
+}
+```
+
+## Dark Mode
+
+Dark mode is enabled by default. The theme is controlled by `next-themes` and can be toggled by users.
+
+### Default Theme
+
+To change the default theme, edit `src/components/ui/ThemeProvider.tsx`:
+
+```typescript
+<NextThemesProvider
+  attribute="class"
+  defaultTheme="light" // or "dark" or "system"
+  enableSystem
+>
+```
+
+### Custom Dark Mode Colors
+
+Edit the CSS variables in `src/styles/globals.css`:
+
+```css
+.dark {
+  --background: #0a0a0b;
+  --background-soft: #111113;
+  --foreground: #fafafa;
+  /* ... */
+}
+```
+
+## Custom Components
+
+Create custom MDX components in `src/components/mdx/`:
+
+```typescript
+// src/components/mdx/CustomAlert.tsx
+export function CustomAlert({ children }) {
+  return (
+    <div className="my-4 p-4 bg-purple-500/10 border border-purple-500/30 rounded-xl">
+      {children}
+    </div>
+  );
+}
+```
+
+Then add it to the component mapping in `src/components/mdx/index.tsx`:
+
+```typescript
+import { CustomAlert } from './CustomAlert';
+
+export const mdxComponents = {
+  // ... existing components
+  CustomAlert,
+};
+```
+
+Now you can use it in MDX:
+
+```mdx
+<CustomAlert>
+  This is my custom alert!
+</CustomAlert>
+```
+
+## Advanced Customization
+
+<AccordionGroup>
+  <Accordion title="Custom CSS">
+    Add custom styles to `src/styles/globals.css`:
+
+    ```css
+    @layer components {
+      .my-custom-class {
+        @apply bg-gradient-to-r from-primary-400 to-primary-600;
+      }
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Custom Layouts">
+    Create new layouts in `src/app` using Next.js conventions:
+
+    ```typescript
+    // src/app/blog/layout.tsx
+    export default function BlogLayout({ children }) {
+      return (
+        <div className="blog-layout">
+          {children}
+        </div>
+      );
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Plugins and Extensions">
+    Add MDX plugins in `next.config.mjs`:
+
+    ```javascript
+    import remarkGfm from 'remark-gfm';
+    import rehypeSlug from 'rehype-slug';
+
+    const withMDX = createMDX({
+      options: {
+        remarkPlugins: [remarkGfm],
+        rehypePlugins: [rehypeSlug],
+      },
+    });
+    ```
+  </Accordion>
+</AccordionGroup>

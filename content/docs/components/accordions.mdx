@@ -1,0 +1,126 @@
+---
+title: Accordions
+description: Collapsible content sections for organizing information
+---
+
+Accordions are perfect for FAQs, troubleshooting guides, or any content where users might only need to see specific sections.
+
+## Basic Usage
+
+```mdx
+<Accordion title="Click to expand">
+  This content is hidden by default and revealed when clicked.
+</Accordion>
+```
+
+<Accordion title="Click to expand">
+  This content is hidden by default and revealed when clicked. You can put any content here, including code blocks, images, and other components.
+</Accordion>
+
+## Default Open
+
+Use `defaultOpen` to start with the accordion expanded:
+
+```mdx
+<Accordion title="I'm open by default" defaultOpen>
+  This accordion starts in the expanded state.
+</Accordion>
+```
+
+<Accordion title="I'm open by default" defaultOpen>
+  This accordion starts in the expanded state. Users can still collapse it by clicking the header.
+</Accordion>
+
+## Accordion Groups
+
+Group related accordions together:
+
+```mdx
+<AccordionGroup>
+  <Accordion title="First Question">
+    Answer to the first question.
+  </Accordion>
+  <Accordion title="Second Question">
+    Answer to the second question.
+  </Accordion>
+</AccordionGroup>
+```
+
+<AccordionGroup>
+  <Accordion title="What is this documentation platform?">
+    This is a modern documentation platform built with Next.js and MDX. It provides a beautiful, fast, and customizable way to create documentation for your projects.
+  </Accordion>
+  <Accordion title="How do I customize the theme?">
+    You can customize colors, fonts, and other design elements in the `tailwind.config.ts` file. The platform uses CSS variables for theming, making it easy to adjust the look and feel.
+  </Accordion>
+  <Accordion title="Can I use my own components?">
+    Yes! You can create custom MDX components and add them to the component mapping. This allows you to extend the platform with your own interactive elements.
+  </Accordion>
+  <Accordion title="Is it open source?">
+    This platform is built for demonstration purposes. You can use the patterns and components as inspiration for your own documentation projects.
+  </Accordion>
+</AccordionGroup>
+
+## Rich Content
+
+Accordions can contain any MDX content:
+
+<Accordion title="Example with code and callouts">
+  Here's how to set up authentication:
+
+  ```typescript
+  import { auth } from './lib/auth';
+
+  export async function middleware(request: Request) {
+    const session = await auth();
+    if (!session) {
+      return Response.redirect('/login');
+    }
+  }
+  ```
+
+  <Warning>
+    Make sure to keep your authentication secrets secure and never commit them to version control.
+  </Warning>
+</Accordion>
+
+## Props
+
+### Accordion
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | Required | The accordion header text |
+| `defaultOpen` | `boolean` | `false` | Whether to start expanded |
+| `icon` | `ReactNode` | - | Optional icon in the header |
+| `children` | `ReactNode` | Required | The collapsible content |
+
+### AccordionGroup
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `children` | `ReactNode` | Accordion components |
+
+## Use Cases
+
+<CardGroup cols={2}>
+  <Card title="FAQs">
+    Perfect for frequently asked questions sections where users can quickly find specific answers.
+  </Card>
+  <Card title="Troubleshooting">
+    Great for troubleshooting guides where users can expand only the issues relevant to them.
+  </Card>
+  <Card title="API Reference">
+    Useful for API documentation where each endpoint can be expanded to show details.
+  </Card>
+  <Card title="Changelogs">
+    Ideal for version changelogs where each version's changes are collapsible.
+  </Card>
+</CardGroup>
+
+## Best Practices
+
+- **Write descriptive titles** - Users should know what's inside before expanding
+- **Keep content focused** - Each accordion should cover one topic
+- **Consider default state** - Open important sections by default
+- **Don't nest too deep** - Avoid putting accordions inside accordions

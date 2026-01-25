@@ -1,0 +1,119 @@
+---
+title: Callouts
+description: Highlight important information with styled alert boxes
+---
+
+Callouts are used to draw attention to important information, warnings, tips, and more.
+
+## Basic Usage
+
+The simplest way to use callouts is with the convenience components:
+
+```mdx
+<Note>This is a note callout.</Note>
+<Info>This is an info callout.</Info>
+<Tip>This is a tip callout.</Tip>
+<Warning>This is a warning callout.</Warning>
+<Danger>This is a danger callout.</Danger>
+<Success>This is a success callout.</Success>
+```
+
+## Examples
+
+### Note
+
+<Note>
+  Notes are great for additional context or supplementary information that readers might find helpful.
+</Note>
+
+### Info
+
+<Info>
+  Info callouts provide neutral information that's important but not critical.
+</Info>
+
+### Tip
+
+<Tip>
+  Tips help readers get the most out of your documentation with helpful suggestions.
+</Tip>
+
+### Warning
+
+<Warning>
+  Warnings alert readers to potential issues or things they should be careful about.
+</Warning>
+
+### Danger
+
+<Danger>
+  Danger callouts indicate critical information about destructive actions or breaking changes.
+</Danger>
+
+### Success
+
+<Success>
+  Success callouts confirm that something worked correctly or highlight positive outcomes.
+</Success>
+
+## Custom Titles
+
+You can customize the title of any callout:
+
+```mdx
+<Tip title="Pro Tip">
+  Use keyboard shortcuts to navigate faster!
+</Tip>
+```
+
+<Tip title="Pro Tip">
+  Use keyboard shortcuts to navigate faster!
+</Tip>
+
+## Using the Callout Component
+
+For more control, use the base `Callout` component with the `type` prop:
+
+```mdx
+<Callout type="warning" title="Deprecation Notice">
+  This API will be removed in version 3.0
+</Callout>
+```
+
+<Callout type="warning" title="Deprecation Notice">
+  This API will be removed in version 3.0
+</Callout>
+
+## Available Types
+
+| Type | Use Case |
+|------|----------|
+| `note` | General additional information |
+| `info` | Neutral informational content |
+| `tip` | Helpful suggestions and best practices |
+| `warning` | Potential issues or cautions |
+| `danger` | Critical warnings or destructive actions |
+| `success` | Confirmations and positive feedback |
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `type` | `string` | `"note"` | The type of callout |
+| `title` | `string` | Type name | Custom title for the callout |
+| `children` | `ReactNode` | - | The content of the callout |
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Do">
+    - Keep callout content concise
+    - Use the appropriate type for your message
+    - Place callouts near relevant content
+  </Card>
+  <Card title="Don't">
+    - Overuse callouts on a single page
+    - Use danger for non-critical information
+    - Put long paragraphs in callouts
+  </Card>
+</CardGroup>

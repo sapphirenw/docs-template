@@ -1,0 +1,161 @@
+---
+title: Tabs
+description: Organize related content into switchable tabbed views
+---
+
+Tabs help organize content that's related but shouldn't all be shown at once, like different installation methods or platform-specific instructions.
+
+## Basic Usage
+
+```mdx
+<Tabs defaultValue="option1">
+  <TabList>
+    <TabTrigger value="option1">Option 1</TabTrigger>
+    <TabTrigger value="option2">Option 2</TabTrigger>
+  </TabList>
+  <Tab value="option1">
+    Content for option 1
+  </Tab>
+  <Tab value="option2">
+    Content for option 2
+  </Tab>
+</Tabs>
+```
+
+## Example
+
+<Tabs defaultValue="react">
+  <TabList>
+    <TabTrigger value="react">React</TabTrigger>
+    <TabTrigger value="vue">Vue</TabTrigger>
+    <TabTrigger value="svelte">Svelte</TabTrigger>
+  </TabList>
+  <Tab value="react">
+    ### React
+
+    React is a JavaScript library for building user interfaces.
+
+    ```jsx
+    function App() {
+      return <h1>Hello, React!</h1>;
+    }
+    ```
+  </Tab>
+  <Tab value="vue">
+    ### Vue
+
+    Vue is a progressive JavaScript framework.
+
+    ```vue
+    <template>
+      <h1>Hello, Vue!</h1>
+    </template>
+    ```
+  </Tab>
+  <Tab value="svelte">
+    ### Svelte
+
+    Svelte is a radical new approach to building user interfaces.
+
+    ```svelte
+    <h1>Hello, Svelte!</h1>
+    ```
+  </Tab>
+</Tabs>
+
+## Package Manager Example
+
+A common use case is showing commands for different package managers:
+
+<Tabs defaultValue="pnpm">
+  <TabList>
+    <TabTrigger value="pnpm">pnpm</TabTrigger>
+    <TabTrigger value="npm">npm</TabTrigger>
+    <TabTrigger value="yarn">yarn</TabTrigger>
+    <TabTrigger value="bun">bun</TabTrigger>
+  </TabList>
+  <Tab value="pnpm">
+    ```bash
+    pnpm add @docs/components
+    ```
+  </Tab>
+  <Tab value="npm">
+    ```bash
+    npm install @docs/components
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn add @docs/components
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bun add @docs/components
+    ```
+  </Tab>
+</Tabs>
+
+## Components
+
+### Tabs
+
+The container component that manages state.
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `defaultValue` | `string` | The initially selected tab value |
+| `children` | `ReactNode` | TabList and Tab components |
+
+### TabList
+
+Container for the tab triggers.
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `children` | `ReactNode` | TabTrigger components |
+
+### TabTrigger
+
+The clickable tab button.
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `value` | `string` | Unique identifier for this tab |
+| `children` | `ReactNode` | Tab label content |
+
+### Tab
+
+The content panel for each tab.
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `value` | `string` | Must match a TabTrigger value |
+| `children` | `ReactNode` | Tab content |
+
+## Code Groups
+
+For simple code-only tabs, use the `CodeGroup` component:
+
+```mdx
+<CodeGroup>
+\`\`\`javascript title="JavaScript"
+const x = 1;
+\`\`\`
+
+\`\`\`typescript title="TypeScript"
+const x: number = 1;
+\`\`\`
+</CodeGroup>
+```
+
+<Info>
+  CodeGroup automatically creates tabs from code blocks with `title` attributes.
+</Info>
+
+## Best Practices
+
+- **Keep tab labels short** - One or two words work best
+- **Use consistent naming** - "npm", not "NPM" or "Npm"
+- **Limit the number of tabs** - More than 5 tabs becomes hard to navigate
+- **Content should be parallel** - Each tab should cover the same topic

@@ -1,0 +1,50 @@
+{
+  "name": "Documentation",
+  "description": "Modern documentation platform powered by MDX",
+  "logo": {
+    "light": "/logo.svg",
+    "dark": "/logo.svg"
+  },
+  "colors": {
+    "primary": "#18E299",
+    "accent": "#0d9373"
+  },
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": [
+        "getting-started/introduction",
+        "getting-started/quickstart",
+        "getting-started/installation"
+      ]
+    },
+    {
+      "group": "Components",
+      "pages": [
+        "components/overview",
+        "components/callouts",
+        "components/code-blocks",
+        "components/tabs",
+        "components/accordions",
+        "components/cards"
+      ]
+    },
+    {
+      "group": "Guides",
+      "pages": [
+        "guides/customization",
+        "guides/deployment"
+      ]
+    }
+  ],
+  "topbarLinks": [
+    {
+      "name": "GitHub",
+      "url": "https://github.com"
+    }
+  ],
+  "footerSocials": {
+    "github": "https://github.com",
+    "twitter": "https://twitter.com"
+  }
+}
