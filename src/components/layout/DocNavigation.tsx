@@ -13,22 +13,22 @@ export function DocNavigation({ prev, next }: DocNavigationProps) {
   if (!prev && !next) return null;
 
   return (
-    <div className="mt-16 pt-8 border-t border-border">
+    <div className="mt-12 pt-6 border-t border-border">
       <div className="flex justify-between gap-4">
         {prev ? (
           <Link
             href={`/docs/${prev.slug}`}
             className={clsx(
-              'group flex flex-col gap-2 p-4 rounded-xl border border-border',
-              'hover:border-primary-500/50 hover:bg-background-soft',
-              'transition-all duration-200 flex-1 max-w-xs'
+              'group flex flex-col gap-1 py-3 px-4 rounded-lg border border-border/50',
+              'hover:border-primary-500/40 hover:bg-primary-500/5',
+              'transition-all duration-150 flex-1 max-w-[280px]'
             )}
           >
-            <span className="text-sm text-foreground-muted flex items-center gap-1">
-              <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-200" />
+            <span className="text-xs text-foreground-soft flex items-center gap-1">
+              <ChevronLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform duration-150" />
               Previous
             </span>
-            <span className="font-medium text-foreground truncate">{prev.title}</span>
+            <span className="text-sm font-medium text-foreground group-hover:text-primary-500 transition-colors truncate">{prev.title}</span>
           </Link>
         ) : (
           <div />
@@ -38,16 +38,16 @@ export function DocNavigation({ prev, next }: DocNavigationProps) {
           <Link
             href={`/docs/${next.slug}`}
             className={clsx(
-              'group flex flex-col gap-2 p-4 rounded-xl border border-border text-right',
-              'hover:border-primary-500/50 hover:bg-background-soft',
-              'transition-all duration-200 flex-1 max-w-xs ml-auto'
+              'group flex flex-col gap-1 py-3 px-4 rounded-lg border border-border/50 text-right',
+              'hover:border-primary-500/40 hover:bg-primary-500/5',
+              'transition-all duration-150 flex-1 max-w-[280px] ml-auto'
             )}
           >
-            <span className="text-sm text-foreground-muted flex items-center gap-1 justify-end">
+            <span className="text-xs text-foreground-soft flex items-center gap-1 justify-end">
               Next
-              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+              <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-150" />
             </span>
-            <span className="font-medium text-foreground truncate">{next.title}</span>
+            <span className="text-sm font-medium text-foreground group-hover:text-primary-500 transition-colors truncate">{next.title}</span>
           </Link>
         ) : (
           <div />

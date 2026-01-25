@@ -25,6 +25,8 @@ import {
   Columns,
   LayoutGrid,
   ListOrdered,
+  FileText,
+  Terminal,
   type LucideIcon,
 } from 'lucide-react';
 import { clsx } from 'clsx';
@@ -52,6 +54,8 @@ const iconMap: Record<string, LucideIcon> = {
   Columns,
   LayoutGrid,
   ListOrdered,
+  FileText,
+  Terminal,
 };
 
 interface CardProps {
@@ -68,37 +72,34 @@ export function Card({ title, description, href, icon, children }: CardProps) {
   const content = (
     <div
       className={clsx(
-        'group relative p-6 rounded-xl border border-border bg-background-soft',
-        'transition-all duration-200',
-        href && 'hover:border-primary-500/50 hover:shadow-lg hover:shadow-primary-500/5 cursor-pointer'
+        'group relative p-3 rounded-lg border border-border',
+        'transition-all duration-150',
+        href && 'hover:border-primary-500/50 hover:bg-background-soft cursor-pointer'
       )}
     >
-      <div className="flex items-start gap-4">
+      <div className="flex items-center gap-3">
         {IconComponent && (
-          <div className="flex-shrink-0 p-2 rounded-lg bg-primary-500/10 text-primary-500">
-            <IconComponent className="w-5 h-5" />
+          <div className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-md bg-primary-500/10 text-primary-500">
+            <IconComponent className="w-4 h-4" />
           </div>
         )}
-        <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-foreground mb-1 flex items-center gap-2">
-            {title}
-            {href && (
-              <ArrowRight
-                className={clsx(
-                  'w-4 h-4 text-foreground-soft transition-transform duration-200',
-                  'group-hover:translate-x-1 group-hover:text-primary-500'
-                )}
-              />
+        <span className="font-medium text-sm text-foreground">
+          {title}
+        </span>
+        {href && (
+          <ArrowRight
+            className={clsx(
+              'w-3.5 h-3.5 text-foreground-soft transition-all duration-150 ml-auto',
+              'opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-primary-500'
             )}
-          </h3>
-          {description && (
-            <p className="text-sm text-foreground-muted">{description}</p>
-          )}
-          {children && (
-            <div className="mt-2 text-sm text-foreground-muted">{children}</div>
-          )}
-        </div>
+          />
+        )}
       </div>
+      {(description || children) && (
+        <div className={clsx('text-[13px] leading-snug text-foreground-muted mt-2', IconComponent && 'ml-11')}>
+          {description || children}
+        </div>
+      )}
     </div>
   );
 
@@ -122,10 +123,10 @@ export function CardGroup({ children, cols = 2 }: CardGroupProps) {
   return (
     <div
       className={clsx(
-        'my-6 grid gap-4',
+        'my-4 grid gap-2',
         cols === 1 && 'grid-cols-1',
-        cols === 2 && 'grid-cols-1 md:grid-cols-2',
-        cols === 3 && 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+        cols === 2 && 'grid-cols-1 sm:grid-cols-2',
+        cols === 3 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
       )}
     >
       {children}

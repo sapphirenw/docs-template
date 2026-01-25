@@ -46,10 +46,10 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
   }
 
   return (
-    <aside className="hidden xl:block w-64 flex-shrink-0">
+    <aside className="hidden xl:block w-56 flex-shrink-0">
       <div className="sticky top-20 max-h-[calc(100vh-5rem)] overflow-y-auto py-6 pr-4 scrollbar-none">
-        <h4 className="text-sm font-semibold text-foreground mb-4">On this page</h4>
-        <nav className="space-y-1">
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground-soft mb-3 pl-3">On this page</h4>
+        <nav className="border-l border-border">
           {tocHeadings.map((heading) => (
             <a
               key={heading.id}
@@ -64,7 +64,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
               }}
               className={clsx(
                 'toc-link',
-                heading.level === 3 && 'pl-4',
+                heading.level === 3 && 'pl-6',
                 activeId === heading.id && 'active'
               )}
             >

@@ -1,0 +1,88 @@
+---
+title: Steps
+description: Display sequential instructions in a numbered format
+---
+
+The Steps component helps you create clear, numbered instructions for multi-step processes.
+
+## Basic Usage
+
+Use `Steps` with `Step` components to create a numbered guide:
+
+<Steps>
+  <Step title="Install dependencies">
+    Run the following command to install required packages:
+    ```bash
+    pnpm install
+    ```
+  </Step>
+  <Step title="Configure your project">
+    Create a configuration file in your project root:
+    ```bash
+    touch docs.config.json
+    ```
+  </Step>
+  <Step title="Start development">
+    Launch the development server:
+    ```bash
+    pnpm dev
+    ```
+  </Step>
+</Steps>
+
+## Code Example
+
+```mdx
+<Steps>
+  <Step title="First Step">
+    Description of the first step.
+  </Step>
+  <Step title="Second Step">
+    Description of the second step.
+  </Step>
+  <Step title="Third Step">
+    Description of the third step.
+  </Step>
+</Steps>
+```
+
+## With Rich Content
+
+Steps can contain any MDX content including code blocks, callouts, and other components:
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/example/docs.git
+    cd docs
+    ```
+  </Step>
+  <Step title="Set up environment">
+    Create a `.env.local` file with your configuration:
+    ```bash
+    API_KEY=your_api_key
+    DATABASE_URL=your_database_url
+    ```
+    <Warning>
+      Never commit your `.env.local` file to version control.
+    </Warning>
+  </Step>
+  <Step title="Verify installation">
+    Run the test suite to ensure everything is working:
+    ```bash
+    pnpm test
+    ```
+    You should see all tests passing.
+  </Step>
+</Steps>
+
+## Best Practices
+
+<Tip>
+  Keep step titles concise and action-oriented. Use verbs like "Install", "Configure", "Create", or "Run".
+</Tip>
+
+- **Number of steps**: Aim for 3-7 steps. If you have more, consider breaking into multiple guides.
+- **Step titles**: Use imperative verbs (Install, Configure, Deploy)
+- **Step content**: Keep each step focused on a single action
+- **Code blocks**: Include copy-able commands when relevant

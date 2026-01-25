@@ -2,6 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { compileMDX } from 'next-mdx-remote/rsc';
+import rehypePrettyCode from 'rehype-pretty-code';
+import remarkGfm from 'remark-gfm';
 import { mdxComponents } from '@/components/mdx';
 
 const CONTENT_DIR = path.join(process.cwd(), 'content/docs');
@@ -44,6 +46,29 @@ function extractHeadings(content: string): Heading[] {
   return headings;
 }
 
+// Shiki theme configuration for syntax highlighting
+const prettyCodeOptions = {
+  theme: {
+    dark: 'github-dark',
+    light: 'github-light',
+  },
+  keepBackground: false,
+  defaultLang: 'plaintext',
+  onVisitLine(node: { children: unknown[] }) {
+    // Prevent lines from collapsing in `display: grid` mode
+    if (node.children.length === 0) {
+      node.children = [{ type: 'text', value: ' ' }];
+    }
+  },
+  onVisitHighlightedLine(node: { properties: { className?: string[] } }) {
+    node.properties.className = node.properties.className || [];
+    node.properties.className.push('highlighted');
+  },
+  onVisitHighlightedChars(node: { properties: { className?: string[] } }) {
+    node.properties.className = ['highlighted-chars'];
+  },
+};
+
 export async function getDocBySlug(slug: string): Promise<DocContent | null> {
   const slugPath = slug.replace(/,/g, '/');
   const filePath = path.join(CONTENT_DIR, `${slugPath}.mdx`);
@@ -66,6 +91,12 @@ export async function getDocBySlug(slug: string): Promise<DocContent | null> {
     source: rawContent,
     options: {
       parseFrontmatter: false,
+      mdxOptions: {
+        remarkPlugins: [remarkGfm],
+        rehypePlugins: [
+          [rehypePrettyCode, prettyCodeOptions],
+        ],
+      },
     },
     components: mdxComponents,
   });

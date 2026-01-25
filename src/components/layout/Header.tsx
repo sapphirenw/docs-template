@@ -43,18 +43,18 @@ export function Header({ siteName, topbarLinks = [], onMenuClick, onSearchClick 
         <button
           onClick={onSearchClick}
           className={clsx(
-            'flex items-center gap-3 px-4 py-2 rounded-xl',
-            'bg-background-soft border border-border',
-            'text-sm text-foreground-muted',
-            'hover:border-foreground-soft hover:text-foreground',
-            'transition-all duration-200',
-            'w-64 lg:w-80'
+            'flex items-center gap-3 px-3 py-1.5 rounded-lg',
+            'bg-background-muted/50 border border-border/50',
+            'text-sm text-foreground-soft',
+            'hover:bg-background-muted hover:border-border hover:text-foreground-muted',
+            'transition-all duration-150',
+            'w-56 lg:w-72'
           )}
         >
-          <Search className="w-4 h-4" />
-          <span className="flex-1 text-left">Search documentation...</span>
-          <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded bg-background-muted text-xs font-medium">
-            <span className="text-base">⌘</span>K
+          <Search className="w-4 h-4 flex-shrink-0" />
+          <span className="flex-1 text-left text-[13px]">Search...</span>
+          <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded border border-border/50 bg-background text-[11px] font-medium text-foreground-soft">
+            <span>⌘</span>K
           </kbd>
         </button>
 

@@ -15,7 +15,7 @@
       "pages": [
         "getting-started/introduction",
         "getting-started/quickstart",
-        "getting-started/installation"
+        "getting-started/writing-content"
       ]
     },
     {
@@ -25,8 +25,11 @@
         "components/callouts",
         "components/code-blocks",
         "components/tabs",
+        "components/steps",
         "components/accordions",
-        "components/cards"
+        "components/cards",
+        "components/mobile",
+        "components/new-components"
       ]
     },
     {

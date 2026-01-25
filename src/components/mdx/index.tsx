@@ -1,11 +1,27 @@
 import { Callout, Note, InfoCallout, Warning, Danger, Tip, Success } from './Callout';
-import { CodeBlock, Pre } from './CodeBlock';
+import { CodeBlock, Pre, CopyButton } from './CodeBlock';
 import { Tabs, TabList, TabTrigger, Tab, CodeGroup } from './Tabs';
 import { Accordion, AccordionGroup } from './Accordion';
 import { Card, CardGroup } from './Card';
 import { Steps, Step } from './Steps';
 import { Frame } from './Frame';
-import { ComponentPropsWithoutRef } from 'react';
+import { Phone, PhoneGroup } from './Phone';
+import { Columns, Column } from './Columns';
+import { Tooltip } from './Tooltip';
+import { Badge } from './Badge';
+import { Icon } from './Icon';
+import { Tile, TileGroup } from './Tiles';
+import { ParamField, ResponseField, Expandable, ApiExample, RequestExample, ResponseExample } from './ApiComponents';
+import { ComponentPropsWithoutRef, ReactNode } from 'react';
+
+// Code figure wrapper with copy button
+function CodeFigure({ children, ...props }: { children?: ReactNode; 'data-rehype-pretty-code-figure'?: string }) {
+  return (
+    <figure className="group relative my-4" {...props}>
+      {children}
+    </figure>
+  );
+}
 
 // MDX components mapping
 export const mdxComponents = {
@@ -29,9 +45,30 @@ export const mdxComponents = {
   Steps,
   Step,
   Frame,
+  Phone,
+  PhoneGroup,
+  Columns,
+  Column,
+  Tooltip,
+  Badge,
+  Icon,
+  Tile,
+  TileGroup,
+  ParamField,
+  ResponseField,
+  Expandable,
+  ApiExample,
+  RequestExample,
+  ResponseExample,
+
+  // Code figure from rehype-pretty-code
+  figure: CodeFigure,
 
   // Override default HTML elements
-  pre: (props: ComponentPropsWithoutRef<'pre'>) => <Pre {...props} />,
+  pre: (props: ComponentPropsWithoutRef<'pre'> & { 'data-language'?: string }) => {
+    // Let rehype-pretty-code handle the styling
+    return <Pre {...props} />;
+  },
 
   h1: (props: ComponentPropsWithoutRef<'h1'>) => (
     <h1
@@ -47,7 +84,7 @@ export const mdxComponents = {
     return (
       <h2
         id={id}
-        className="text-2xl font-semibold tracking-tight mt-10 mb-4 scroll-mt-20 border-b border-border pb-2"
+        className="text-xl font-semibold tracking-tight mt-8 mb-3 scroll-mt-20 pb-2 border-b border-border"
         {...props}
       />
     );
@@ -60,7 +97,7 @@ export const mdxComponents = {
     return (
       <h3
         id={id}
-        className="text-xl font-semibold tracking-tight mt-8 mb-3 scroll-mt-20"
+        className="text-lg font-semibold tracking-tight mt-6 mb-2 scroll-mt-20"
         {...props}
       />
     );
@@ -68,37 +105,37 @@ export const mdxComponents = {
 
   h4: (props: ComponentPropsWithoutRef<'h4'>) => (
     <h4
-      className="text-lg font-semibold tracking-tight mt-6 mb-2 scroll-mt-20"
+      className="text-base font-semibold tracking-tight mt-4 mb-2 scroll-mt-20"
       {...props}
     />
   ),
 
   p: (props: ComponentPropsWithoutRef<'p'>) => (
-    <p className="leading-7 [&:not(:first-child)]:mt-4" {...props} />
+    <p className="text-[15px] leading-7 [&:not(:first-child)]:mt-4 text-foreground-muted" {...props} />
   ),
 
   a: (props: ComponentPropsWithoutRef<'a'>) => (
     <a
-      className="text-primary-500 hover:text-primary-600 underline underline-offset-4 decoration-primary-500/30 hover:decoration-primary-500 transition-colors"
+      className="text-primary-500 hover:text-primary-400 underline underline-offset-2 decoration-primary-500/40 hover:decoration-primary-500 transition-colors"
       {...props}
     />
   ),
 
   ul: (props: ComponentPropsWithoutRef<'ul'>) => (
-    <ul className="my-4 ml-6 list-disc [&>li]:mt-2" {...props} />
+    <ul className="my-4 ml-6 list-disc [&>li]:mt-1.5 text-[15px]" {...props} />
   ),
 
   ol: (props: ComponentPropsWithoutRef<'ol'>) => (
-    <ol className="my-4 ml-6 list-decimal [&>li]:mt-2" {...props} />
+    <ol className="my-4 ml-6 list-decimal [&>li]:mt-1.5 text-[15px]" {...props} />
   ),
 
   li: (props: ComponentPropsWithoutRef<'li'>) => (
-    <li className="text-foreground-muted" {...props} />
+    <li className="text-foreground-muted leading-7" {...props} />
   ),
 
   blockquote: (props: ComponentPropsWithoutRef<'blockquote'>) => (
     <blockquote
-      className="my-6 border-l-4 border-primary-500 pl-4 italic text-foreground-muted"
+      className="my-4 border-l-2 border-primary-500 pl-4 text-[15px] text-foreground-muted"
       {...props}
     />
   ),
@@ -107,44 +144,67 @@ export const mdxComponents = {
     <hr className="my-8 border-border" {...props} />
   ),
 
+  // Table components with proper styling
   table: (props: ComponentPropsWithoutRef<'table'>) => (
-    <div className="my-6 w-full overflow-x-auto">
-      <table className="w-full border-collapse" {...props} />
+    <div className="my-4 w-full overflow-hidden rounded-lg border border-border">
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm" {...props} />
+      </div>
     </div>
+  ),
+
+  thead: (props: ComponentPropsWithoutRef<'thead'>) => (
+    <thead className="bg-background-muted" {...props} />
+  ),
+
+  tbody: (props: ComponentPropsWithoutRef<'tbody'>) => (
+    <tbody className="divide-y divide-border" {...props} />
+  ),
+
+  tr: (props: ComponentPropsWithoutRef<'tr'>) => (
+    <tr className="border-b border-border last:border-b-0" {...props} />
   ),
 
   th: (props: ComponentPropsWithoutRef<'th'>) => (
     <th
-      className="border border-border bg-background-muted px-4 py-2 text-left font-semibold"
+      className="px-3 py-2 text-left text-xs font-semibold text-foreground-muted uppercase tracking-wider"
       {...props}
     />
   ),
 
   td: (props: ComponentPropsWithoutRef<'td'>) => (
-    <td className="border border-border px-4 py-2" {...props} />
+    <td className="px-3 py-2 text-foreground-muted" {...props} />
   ),
 
   code: (props: ComponentPropsWithoutRef<'code'>) => {
-    // Check if it's inline code (not in a pre block)
-    const isInline = !props.className?.includes('language-');
-    if (isInline) {
-      return (
-        <code
-          className="relative rounded bg-background-muted px-[0.4em] py-[0.2em] font-mono text-sm text-foreground"
-          {...props}
-        />
-      );
+    // Check if it has data attributes from rehype-pretty-code
+    if ('data-language' in props) {
+      return <code {...props} />;
     }
-    return <code className="font-mono text-sm" {...props} />;
+    // Inline code
+    return (
+      <code
+        className="relative rounded bg-background-muted px-[0.4em] py-[0.15em] font-mono text-[0.9em] text-foreground"
+        {...props}
+      />
+    );
   },
 
   img: (props: ComponentPropsWithoutRef<'img'>) => (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      className="rounded-xl border border-border my-6"
+      className="rounded-lg border border-border my-4 max-w-full"
       alt={props.alt || ''}
       {...props}
     />
+  ),
+
+  strong: (props: ComponentPropsWithoutRef<'strong'>) => (
+    <strong className="font-semibold text-foreground" {...props} />
+  ),
+
+  em: (props: ComponentPropsWithoutRef<'em'>) => (
+    <em className="italic" {...props} />
   ),
 };
 
@@ -159,6 +219,7 @@ export {
   Success,
   CodeBlock,
   Pre,
+  CopyButton,
   Tabs,
   TabList,
   TabTrigger,
@@ -171,4 +232,19 @@ export {
   Steps,
   Step,
   Frame,
+  Phone,
+  PhoneGroup,
+  Columns,
+  Column,
+  Tooltip,
+  Badge,
+  Icon,
+  Tile,
+  TileGroup,
+  ParamField,
+  ResponseField,
+  Expandable,
+  ApiExample,
+  RequestExample,
+  ResponseExample,
 };

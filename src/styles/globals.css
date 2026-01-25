@@ -6,19 +6,19 @@
   :root {
     /* Light mode colors - RGB values for opacity support */
     --background: 255 255 255;
-    --background-soft: 248 250 252;
-    --background-muted: 241 245 249;
-    --foreground: 15 23 42;
-    --foreground-muted: 71 85 105;
-    --foreground-soft: 148 163 184;
-    --border: 226 232 240;
-    --border-soft: 241 245 249;
+    --background-soft: 249 250 251;
+    --background-muted: 243 244 246;
+    --foreground: 17 24 39;
+    --foreground-muted: 107 114 128;
+    --foreground-soft: 156 163 175;
+    --border: 229 231 235;
+    --border-soft: 243 244 246;
     --primary: 24 226 153;
   }
 
   .dark {
     /* Dark mode colors - RGB values for opacity support */
-    --background: 10 10 11;
+    --background: 9 9 11;
     --background-soft: 17 17 19;
     --background-muted: 24 24 27;
     --foreground: 250 250 250;
@@ -46,7 +46,7 @@
 
   /* Custom scrollbar */
   ::-webkit-scrollbar {
-    @apply w-2 h-2;
+    @apply w-1.5 h-1.5;
   }
 
   ::-webkit-scrollbar-track {
@@ -89,39 +89,30 @@
     --tw-prose-td-borders: rgb(var(--border-soft));
   }
 
-  /* Code block styles */
-  .code-block {
-    @apply relative rounded-xl overflow-hidden;
-  }
-
-  .code-block pre {
-    @apply p-4 overflow-x-auto text-sm leading-relaxed;
-  }
-
-  .code-block code {
-    @apply font-mono text-[13px];
-  }
-
   /* Sidebar link */
   .sidebar-link {
-    @apply flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors duration-150;
+    @apply relative flex items-center gap-2 px-2 py-1 text-[13px] rounded-md transition-all duration-150;
     color: rgb(var(--foreground-muted));
   }
 
   .sidebar-link:hover {
     color: rgb(var(--foreground));
-    background-color: rgb(var(--background-muted));
   }
 
   .sidebar-link.active {
     color: rgb(var(--primary));
-    background-color: rgb(var(--primary) / 0.1);
     @apply font-medium;
+  }
+
+  .sidebar-link.active::before {
+    content: '';
+    @apply absolute -left-[13px] w-0.5 h-4 rounded-full;
+    background-color: rgb(var(--primary));
   }
 
   /* TOC link */
   .toc-link {
-    @apply block py-1.5 text-sm transition-colors duration-150;
+    @apply relative block py-1 text-[13px] transition-colors duration-150 pl-3 border-l-2 border-transparent -ml-px;
     color: rgb(var(--foreground-soft));
   }
 
@@ -131,6 +122,7 @@
 
   .toc-link.active {
     color: rgb(var(--primary));
+    border-left-color: rgb(var(--primary));
     @apply font-medium;
   }
 
@@ -139,11 +131,6 @@
     @apply backdrop-blur-xl;
     background-color: rgb(var(--background) / 0.8);
     border-color: rgb(var(--border));
-  }
-
-  /* Card hover */
-  .card-hover {
-    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5;
   }
 }
 
@@ -156,12 +143,6 @@
 
   .scrollbar-none::-webkit-scrollbar {
     display: none;
-  }
-
-  /* Focus ring */
-  .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
-    --tw-ring-color: rgb(var(--primary) / 0.5);
   }
 
   /* Background utilities */
@@ -198,4 +179,146 @@
   .border-border-soft {
     border-color: rgb(var(--border-soft));
   }
+}
+
+/* ===========================================
+   Syntax Highlighting (rehype-pretty-code)
+   =========================================== */
+
+/* Code block container */
+[data-rehype-pretty-code-figure] {
+  @apply my-4;
+}
+
+/* Pre element styling */
+[data-rehype-pretty-code-figure] pre {
+  @apply overflow-x-auto rounded-lg py-4 px-0 text-sm leading-relaxed;
+  background-color: #0a0a0c !important;
+  border: 1px solid rgb(var(--border) / 0.5);
+}
+
+/* Light mode adjustments */
+:root:not(.dark) [data-rehype-pretty-code-figure] pre {
+  background-color: #fafafa !important;
+  border: 1px solid rgb(var(--border));
+}
+
+/* Code element inside pre */
+[data-rehype-pretty-code-figure] pre code {
+  @apply grid font-mono text-[13px];
+  counter-reset: line;
+}
+
+/* Shiki dual-theme color application */
+[data-rehype-pretty-code-figure] pre code span {
+  color: var(--shiki-dark);
+}
+
+:root:not(.dark) [data-rehype-pretty-code-figure] pre code span {
+  color: var(--shiki-light);
+}
+
+/* Line styling */
+[data-rehype-pretty-code-figure] pre code > [data-line] {
+  @apply px-4 border-l-2 border-transparent;
+}
+
+/* Highlighted lines */
+[data-rehype-pretty-code-figure] pre code > [data-line].highlighted {
+  @apply bg-white/5 border-l-primary-500;
+}
+
+/* Line numbers (if enabled) */
+[data-rehype-pretty-code-figure] pre code[data-line-numbers] > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  @apply inline-block w-4 mr-4 text-right text-gray-500;
+}
+
+/* Code title/filename */
+[data-rehype-pretty-code-title] {
+  @apply px-4 py-2 text-xs font-mono border border-b-0 border-border rounded-t-lg;
+  @apply text-gray-500 bg-gray-100;
+}
+
+.dark [data-rehype-pretty-code-title] {
+  @apply text-gray-400 bg-[#161b22];
+}
+
+[data-rehype-pretty-code-title] + pre {
+  @apply rounded-t-none mt-0;
+}
+
+/* Inline code */
+[data-rehype-pretty-code-figure] code[data-line-numbers-max-digits="1"] > [data-line]::before {
+  @apply w-2;
+}
+
+[data-rehype-pretty-code-figure] code[data-line-numbers-max-digits="2"] > [data-line]::before {
+  @apply w-4;
+}
+
+/* Highlighted chars */
+.highlighted-chars {
+  @apply bg-primary-500/20 rounded px-1 py-0.5;
+}
+
+/* Ensure code blocks have proper font */
+pre code,
+code {
+  font-family: var(--font-mono), 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Inline code (not in pre) */
+:not(pre) > code {
+  @apply relative rounded bg-background-muted px-[0.4em] py-[0.2em] font-mono text-[0.875em];
+  color: rgb(var(--foreground));
+}
+
+/* ===========================================
+   Table Styling
+   =========================================== */
+
+/* Table wrapper for overflow */
+.prose table {
+  @apply w-full text-sm my-4;
+  display: table;
+  border-collapse: collapse;
+}
+
+.prose thead {
+  border-bottom: 1px solid rgb(var(--border));
+}
+
+.prose thead tr {
+  border-bottom: 1px solid rgb(var(--border));
+}
+
+.prose thead th {
+  @apply px-3 py-2 text-left text-xs font-semibold uppercase tracking-wider;
+  color: rgb(var(--foreground-muted));
+  background-color: rgb(var(--background-soft));
+}
+
+.prose tbody tr {
+  border-bottom: 1px solid rgb(var(--border-soft));
+}
+
+.prose tbody tr:last-child {
+  border-bottom: none;
+}
+
+.prose tbody td {
+  @apply px-3 py-2 align-top;
+  color: rgb(var(--foreground));
+}
+
+/* First column often has code/names */
+.prose tbody td:first-child {
+  @apply font-medium;
+}
+
+/* Make tables scrollable on mobile */
+.table-wrapper {
+  @apply overflow-x-auto -mx-4 px-4;
 }

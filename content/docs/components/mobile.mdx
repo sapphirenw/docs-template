@@ -1,0 +1,134 @@
+---
+title: Mobile Components
+description: Components for showcasing mobile app screenshots and interfaces
+---
+
+These components help you display mobile app content in a professional, polished way.
+
+## Frame
+
+The Frame component provides a container for images and other visual content with optional hint text and captions.
+
+### Basic Usage
+
+<Frame caption="A sample dashboard interface">
+  <img src="https://placehold.co/800x450/1a1a2e/ffffff?text=App+Screenshot" alt="Dashboard" />
+</Frame>
+
+### With Hint Text
+
+Use the `hint` prop to add context above the frame:
+
+<Frame hint="Click the menu icon to access settings" caption="Main navigation">
+  <img src="https://placehold.co/800x450/2d3748/ffffff?text=Navigation+Example" alt="Navigation" />
+</Frame>
+
+### Code Example
+
+```mdx
+<Frame hint="Optional hint text" caption="Optional caption">
+  <img src="/path/to/image.png" alt="Description" />
+</Frame>
+```
+
+### Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `hint` | string | Text displayed above the frame |
+| `caption` | string | Text displayed below the frame |
+| `className` | string | Additional CSS classes |
+
+## Phone
+
+The Phone component displays content inside a realistic iPhone mockup, perfect for showcasing mobile app screenshots.
+
+### Basic Usage
+
+<Phone caption="Home screen">
+  <img src="https://placehold.co/390x844/4F46E5/ffffff?text=App+Home" alt="App home screen" />
+</Phone>
+
+### Device Variants
+
+Choose from different device colors:
+
+<PhoneGroup>
+  <Phone variant="dark" caption="Space Black">
+    <img src="https://placehold.co/390x844/1a1a2e/ffffff?text=Dark" alt="Dark variant" />
+  </Phone>
+  <Phone variant="light" caption="Silver">
+    <img src="https://placehold.co/390x844/6366f1/ffffff?text=Light" alt="Light variant" />
+  </Phone>
+  <Phone variant="blue" caption="Blue">
+    <img src="https://placehold.co/390x844/3b82f6/ffffff?text=Blue" alt="Blue variant" />
+  </Phone>
+  <Phone variant="gold" caption="Gold">
+    <img src="https://placehold.co/390x844/f59e0b/ffffff?text=Gold" alt="Gold variant" />
+  </Phone>
+</PhoneGroup>
+
+### With Video
+
+The Phone component also supports video content:
+
+```mdx
+<Phone caption="Onboarding flow">
+  <video autoPlay loop muted playsInline>
+    <source src="/videos/onboarding.mp4" type="video/mp4" />
+  </video>
+</Phone>
+```
+
+### Multiple Phones
+
+Use `PhoneGroup` to display multiple phones side by side:
+
+<PhoneGroup>
+  <Phone variant="dark" caption="Step 1: Sign up">
+    <img src="https://placehold.co/390x844/10b981/ffffff?text=Sign+Up" alt="Sign up" />
+  </Phone>
+  <Phone variant="dark" caption="Step 2: Profile">
+    <img src="https://placehold.co/390x844/8b5cf6/ffffff?text=Profile" alt="Profile" />
+  </Phone>
+  <Phone variant="dark" caption="Step 3: Dashboard">
+    <img src="https://placehold.co/390x844/f43f5e/ffffff?text=Dashboard" alt="Dashboard" />
+  </Phone>
+</PhoneGroup>
+
+### Code Example
+
+```mdx
+<Phone variant="dark" caption="App screenshot">
+  <img src="/screenshots/app-home.png" alt="App home screen" />
+</Phone>
+
+<PhoneGroup>
+  <Phone caption="Screen 1">
+    <img src="/screenshots/screen1.png" alt="Screen 1" />
+  </Phone>
+  <Phone caption="Screen 2">
+    <img src="/screenshots/screen2.png" alt="Screen 2" />
+  </Phone>
+</PhoneGroup>
+```
+
+### Phone Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"dark"` \| `"light"` \| `"gold"` \| `"blue"` | `"dark"` | Device frame color |
+| `caption` | string | - | Text displayed below the phone |
+| `className` | string | - | Additional CSS classes |
+
+## Best Practices
+
+<Tip>
+  Use consistent phone variants across your documentation for a cohesive look.
+</Tip>
+
+- **Image dimensions**: Use 390x844 pixels (iPhone 14/15 resolution) for best results
+- **Screenshots**: Capture actual device screenshots for authenticity
+- **Videos**: Keep videos short and use `autoPlay`, `loop`, and `muted` attributes
+- **Captions**: Add descriptive captions to explain what the user is seeing
+- **Grouping**: Use `PhoneGroup` when showing related screens or flows

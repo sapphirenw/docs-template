@@ -1,0 +1,213 @@
+---
+title: Writing Content
+description: Learn how to write documentation with MDX
+---
+
+This guide covers writing documentation content using MDX files.
+
+## MDX Basics
+
+MDX combines Markdown with JSX components. Write normal Markdown and use components where needed:
+
+```mdx
+# Page Title
+
+Regular markdown paragraph with **bold** and *italic* text.
+
+<Tip>
+  This is a component embedded in your content.
+</Tip>
+
+More markdown content below.
+```
+
+## File Structure
+
+Place MDX files in `content/docs/` following your navigation structure:
+
+```
+content/docs/
+├── getting-started/
+│   ├── introduction.mdx
+│   └── quickstart.mdx
+├── guides/
+│   ├── configuration.mdx
+│   └── deployment.mdx
+└── api/
+    ├── authentication.mdx
+    └── endpoints.mdx
+```
+
+## Frontmatter
+
+Every MDX file needs frontmatter at the top:
+
+```mdx
+---
+title: Page Title
+description: Brief description for SEO and previews
+---
+
+Your content here...
+```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `title` | Yes | Page title shown in sidebar and browser tab |
+| `description` | No | Meta description for SEO |
+
+## Headings
+
+Use headings to structure your content. `##` headings appear in the table of contents:
+
+```mdx
+## Main Section
+
+Content under main section.
+
+### Subsection
+
+Content under subsection.
+
+#### Smaller heading
+
+Not shown in table of contents.
+```
+
+<Note>
+  The page title comes from frontmatter. Start your content with `##` headings, not `#`.
+</Note>
+
+## Code Blocks
+
+Use fenced code blocks with language identifiers:
+
+~~~mdx
+```javascript
+const greeting = "Hello, world!";
+console.log(greeting);
+```
+~~~
+
+Renders as:
+
+```javascript
+const greeting = "Hello, world!";
+console.log(greeting);
+```
+
+### Supported Languages
+
+Common languages: `javascript`, `typescript`, `python`, `bash`, `json`, `yaml`, `go`, `rust`, `sql`, `html`, `css`
+
+## Links
+
+### Internal Links
+
+Link to other docs pages:
+
+```mdx
+See the [Quickstart Guide](/docs/getting-started/quickstart) for setup instructions.
+```
+
+### External Links
+
+```mdx
+Visit [GitHub](https://github.com) for more information.
+```
+
+## Images
+
+Place images in the `public/` directory:
+
+```mdx
+![Alt text](/images/screenshot.png)
+```
+
+Or use the Frame component for styled images:
+
+```mdx
+<Frame>
+  ![Screenshot](/images/screenshot.png)
+</Frame>
+```
+
+## Tables
+
+Standard Markdown tables work:
+
+```mdx
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /users | List all users |
+| POST | /users | Create a user |
+| DELETE | /users/:id | Delete a user |
+```
+
+Renders as:
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /users | List all users |
+| POST | /users | Create a user |
+| DELETE | /users/:id | Delete a user |
+
+## Using Components
+
+Import-free components are available globally:
+
+```mdx
+<Callout type="warning" title="Important">
+  This is a warning message.
+</Callout>
+
+<Steps>
+  <Step title="First step">
+    Do this first.
+  </Step>
+  <Step title="Second step">
+    Then do this.
+  </Step>
+</Steps>
+```
+
+See the [Components Overview](/docs/components/overview) for all available components.
+
+## Navigation
+
+After creating a new page, add it to `docs.config.json`:
+
+```json
+{
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": [
+        "getting-started/introduction",
+        "getting-started/new-page"    // Add your new page
+      ]
+    }
+  ]
+}
+```
+
+<Warning>
+  Pages not listed in navigation won't appear in the sidebar but are still accessible via direct URL.
+</Warning>
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Keep pages focused" icon="FileText">
+    One topic per page. Split long pages into multiple files.
+  </Card>
+  <Card title="Use components" icon="Blocks">
+    Callouts, steps, and cards improve readability.
+  </Card>
+  <Card title="Add code examples" icon="Code">
+    Show, don't just tell. Include runnable examples.
+  </Card>
+  <Card title="Test your links" icon="Link">
+    Broken links frustrate readers. Verify before deploying.
+  </Card>
+</CardGroup>
