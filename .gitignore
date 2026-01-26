@@ -36,3 +36,7 @@ next-env.d.ts
 # IDE
 .idea
 .vscode
+
+
+# local content
+local-content
