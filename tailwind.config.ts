@@ -11,19 +11,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Primary accent - Mintlify-inspired teal/green
+        // Primary accent - uses CSS variable from config
         primary: {
-          50: '#ecfdf7',
-          100: '#d1fae9',
-          200: '#a7f3d6',
-          300: '#6ee7bf',
-          400: '#34d3a3',
-          500: '#18E299',
-          600: '#0d9373',
-          700: '#0f7a60',
-          800: '#11614d',
-          900: '#105040',
-          950: '#032d24',
+          50: 'rgb(var(--primary) / 0.05)',
+          100: 'rgb(var(--primary) / 0.1)',
+          200: 'rgb(var(--primary) / 0.2)',
+          300: 'rgb(var(--primary) / 0.3)',
+          400: 'rgb(var(--primary) / 0.7)',
+          500: 'rgb(var(--primary) / <alpha-value>)',
+          600: 'rgb(var(--primary) / 0.85)',
+          700: 'rgb(var(--primary) / 0.7)',
+          800: 'rgb(var(--primary) / 0.6)',
+          900: 'rgb(var(--primary) / 0.5)',
+          950: 'rgb(var(--primary) / 0.4)',
         },
         // Background colors using CSS variables with rgb()
         background: {
@@ -53,7 +53,7 @@ const config: Config = {
             maxWidth: 'none',
             color: 'rgb(var(--foreground))',
             a: {
-              color: '#18E299',
+              color: 'rgb(var(--primary))',
               textDecoration: 'none',
               '&:hover': {
                 textDecoration: 'underline',
@@ -81,7 +81,7 @@ const config: Config = {
               color: 'rgb(var(--foreground))',
             },
             blockquote: {
-              borderLeftColor: '#18E299',
+              borderLeftColor: 'rgb(var(--primary))',
               color: 'rgb(var(--foreground-muted))',
             },
           },

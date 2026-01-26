@@ -7,12 +7,16 @@ import { ThemeToggle } from '../ui/ThemeToggle';
 
 interface HeaderProps {
   siteName: string;
+  logo?: {
+    light: string;
+    dark: string;
+  };
   topbarLinks?: Array<{ name: string; url: string }>;
   onMenuClick: () => void;
   onSearchClick: () => void;
 }
 
-export function Header({ siteName, topbarLinks = [], onMenuClick, onSearchClick }: HeaderProps) {
+export function Header({ siteName, logo, topbarLinks = [], onMenuClick, onSearchClick }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 h-16 border-b border-border glass">
       <div className="flex items-center justify-between h-full px-4 max-w-screen-2xl mx-auto">
@@ -32,9 +36,24 @@ export function Header({ siteName, topbarLinks = [], onMenuClick, onSearchClick 
             href="/"
             className="flex items-center gap-2 font-semibold text-lg hover:opacity-80 transition-opacity"
           >
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-sm">
-              D
-            </div>
+            {logo ? (
+              <>
+                <img
+                  src={logo.light}
+                  alt={siteName}
+                  className="w-8 h-8 dark:hidden"
+                />
+                <img
+                  src={logo.dark}
+                  alt={siteName}
+                  className="w-8 h-8 hidden dark:block"
+                />
+              </>
+            ) : (
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-sm">
+                {siteName.charAt(0)}
+              </div>
+            )}
             <span className="hidden sm:inline">{siteName}</span>
           </Link>
         </div>

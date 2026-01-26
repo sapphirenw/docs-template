@@ -79,6 +79,7 @@ export function DocsShell({ children, config }: DocsShellProps) {
     <div className="min-h-screen bg-background">
       <Header
         siteName={config.name}
+        logo={config.logo}
         topbarLinks={config.topbarLinks}
         onMenuClick={() => setSidebarOpen(!sidebarOpen)}
         onSearchClick={() => setSearchOpen(true)}
