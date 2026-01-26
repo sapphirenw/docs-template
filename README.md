@@ -55,6 +55,7 @@ Edit `docs.config.json` to customize your site:
   "name": "My Docs",
   "description": "Documentation for My Project",
   "contentPath": "content/docs",
+  "rootPage": "getting-started/introduction",
   "logo": {
     "light": "/logo.svg",
     "dark": "/logo-dark.svg"
@@ -77,6 +78,47 @@ Edit `docs.config.json` to customize your site:
   }
 }
 ```
+
+### Config Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `name` | string | required | Site name displayed in header |
+| `description` | string | required | Site description for SEO |
+| `contentPath` | string | `"content/docs"` | Path to documentation content |
+| `rootPage` | string | first nav page | Doc page to show at `/` (see below) |
+| `logo` | object | required | Light/dark logo paths |
+| `colors` | object | required | Primary and accent colors |
+| `navigation` | array | required | Sidebar navigation structure |
+| `topbarLinks` | array | `[]` | Links in the header |
+| `footerSocials` | object | `{}` | Social links in footer |
+
+### URL Structure
+
+All documentation pages are served directly from the root:
+- `/` - Shows the configured `rootPage` (or first page in navigation)
+- `/getting-started/quickstart` - Documentation pages
+- `/components/overview` - Component documentation
+
+### Root Page Configuration
+
+The `rootPage` option controls what content appears at your domain root (`/`):
+
+```json
+{
+  "rootPage": "getting-started/introduction"
+}
+```
+
+To create a custom landing page, create an MDX file (e.g., `content/docs/home.mdx`) and set:
+
+```json
+{
+  "rootPage": "home"
+}
+```
+
+Your `home.mdx` can use any MDX components to create a custom welcome page while still having access to the sidebar navigation.
 
 ## Components
 
@@ -107,10 +149,10 @@ console.log('Hello');
 
 ```mdx
 <CardGroup cols={2}>
-  <Card title="Getting Started" icon="rocket" href="/docs/quickstart">
+  <Card title="Getting Started" icon="rocket" href="/getting-started/quickstart">
     Learn the basics
   </Card>
-  <Card title="API Reference" icon="code" href="/docs/api">
+  <Card title="API Reference" icon="code" href="/api/reference">
     Explore the API
   </Card>
 </CardGroup>
@@ -141,7 +183,7 @@ console.log('Hello');
 </Frame>
 ```
 
-See the [components documentation](/docs/components) for the full list.
+See the [components documentation](/components/overview) for the full list.
 
 ## Deployment
 
@@ -180,7 +222,7 @@ The platform loads `docs.config.local.json` first if it exists, allowing you to:
 - Pull platform updates without conflicts
 - Maintain separate configuration
 
-See the [deployment guide](/docs/guides/deployment) for detailed instructions.
+See the [deployment guide](/guides/deployment) for detailed instructions.
 
 ## Development
 

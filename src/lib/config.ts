@@ -25,6 +25,8 @@ export interface DocsConfig {
   footerSocials: Record<string, string>;
   /** Path to content directory, relative to project root. Defaults to 'content/docs' */
   contentPath?: string;
+  /** The doc page to show at the root URL (/). Defaults to first page in navigation. */
+  rootPage?: string;
 }
 
 let configCache: DocsConfig | null = null;
@@ -76,4 +78,23 @@ export function getAllDocSlugs(): string[] {
   }
 
   return slugs;
+}
+
+/**
+ * Get the root page slug (for / route).
+ * Uses config.rootPage or falls back to first page in navigation.
+ */
+export function getRootPageSlug(): string {
+  const config = getConfig();
+
+  if (config.rootPage) {
+    return config.rootPage;
+  }
+
+  // Default to first page in navigation
+  if (config.navigation.length > 0 && config.navigation[0].pages.length > 0) {
+    return config.navigation[0].pages[0];
+  }
+
+  return 'getting-started/introduction';
 }

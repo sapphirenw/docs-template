@@ -6,6 +6,18 @@ import { ChevronRight, FileText, X, Zap } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useState } from 'react';
 import { NavItem } from '@/lib/config';
+import docsConfig from '../../../docs.config.json';
+
+// Get the root page slug from config or default to first page
+function getRootPage(): string {
+  if ((docsConfig as { rootPage?: string }).rootPage) {
+    return (docsConfig as { rootPage?: string }).rootPage!;
+  }
+  if (docsConfig.navigation.length > 0 && docsConfig.navigation[0].pages.length > 0) {
+    return docsConfig.navigation[0].pages[0];
+  }
+  return '';
+}
 
 interface SidebarProps {
   navigation: NavItem[];
@@ -100,8 +112,9 @@ function NavGroup({ group, docTitles, onNavigate }: NavGroupProps) {
       {isExpanded && (
         <div className="mt-1 ml-1 border-l border-border pl-3 space-y-0.5">
           {group.pages.map((page) => {
-            const href = `/docs/${page}`;
-            const isActive = pathname === href;
+            const href = `/${page}`;
+            const rootPage = getRootPage();
+            const isActive = pathname === href || (pathname === '/' && page === rootPage);
             const title = docTitles[page] || formatTitle(page);
 
             return (

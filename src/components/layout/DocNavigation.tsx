@@ -17,7 +17,7 @@ export function DocNavigation({ prev, next }: DocNavigationProps) {
       <div className="flex justify-between gap-4">
         {prev ? (
           <Link
-            href={`/docs/${prev.slug}`}
+            href={`/${prev.slug}`}
             className={clsx(
               'group flex flex-col gap-1 py-3 px-4 rounded-lg border border-border/50',
               'hover:border-primary-500/40 hover:bg-primary-500/5',
@@ -36,7 +36,7 @@ export function DocNavigation({ prev, next }: DocNavigationProps) {
 
         {next ? (
           <Link
-            href={`/docs/${next.slug}`}
+            href={`/${next.slug}`}
             className={clsx(
               'group flex flex-col gap-1 py-3 px-4 rounded-lg border border-border/50 text-right',
               'hover:border-primary-500/40 hover:bg-primary-500/5',

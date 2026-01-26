@@ -60,7 +60,7 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
         case 'Enter':
           e.preventDefault();
           if (results[selectedIndex]) {
-            router.push(`/docs/${results[selectedIndex].slug}`);
+            router.push(`/${results[selectedIndex].slug}`);
             onClose();
           }
           break;
@@ -155,7 +155,7 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
                         <button
                           key={result.slug}
                           onClick={() => {
-                            router.push(`/docs/${result.slug}`);
+                            router.push(`/${result.slug}`);
                             onClose();
                           }}
                           onMouseEnter={() => setSelectedIndex(index)}

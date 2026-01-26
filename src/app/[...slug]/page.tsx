@@ -40,7 +40,6 @@ export default async function DocPage({ params }: PageProps) {
     notFound();
   }
 
-  const config = getConfig();
   const allSlugs = getAllDocSlugs();
   const currentIndex = allSlugs.indexOf(slugPath);
 
