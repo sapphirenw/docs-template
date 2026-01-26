@@ -3,9 +3,148 @@ title: Deployment
 description: Deploy your documentation site with Docker
 ---
 
-This guide covers deploying your documentation site using Docker, optimized for small image sizes.
+This guide covers deploying your documentation site using Docker, and integrating it into existing projects as a git submodule.
 
-## Quick Start
+## Monorepo / Submodule Setup
+
+If you're adding documentation to an existing project, you can use this platform as a git submodule. This keeps the docs platform separate from your content while allowing you to pull updates.
+
+### Add as Submodule
+
+```bash
+cd your-monorepo
+git submodule add https://github.com/your-org/doc-hosting-platform.git packages/docs
+```
+
+### Project Structure
+
+```
+your-monorepo/
+├── packages/
+│   └── docs/                    # ← submodule (this platform)
+│       ├── docs.config.json     # ← sample config (don't edit)
+│       ├── content/docs/        # ← sample content (ignore)
+│       └── src/
+├── docs-content/                # ← YOUR documentation files
+│   ├── getting-started/
+│   │   └── intro.mdx
+│   └── guides/
+│       └── setup.mdx
+└── docs.config.local.json       # ← YOUR config (gitignored by submodule)
+```
+
+### Local Config Override
+
+The platform loads `docs.config.local.json` first if it exists, falling back to `docs.config.json`. This file is gitignored, so your config won't conflict with submodule updates.
+
+Create `docs.config.local.json` in the submodule directory:
+
+```json
+{
+  "name": "My Project Docs",
+  "description": "Documentation for My Project",
+  "contentPath": "../../docs-content",
+  "logo": {
+    "light": "/logo.svg",
+    "dark": "/logo.svg"
+  },
+  "colors": {
+    "primary": "#18E299",
+    "accent": "#0d9373"
+  },
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": ["getting-started/intro"]
+    },
+    {
+      "group": "Guides",
+      "pages": ["guides/setup"]
+    }
+  ],
+  "topbarLinks": [],
+  "footerSocials": {}
+}
+```
+
+<Note>
+  The `contentPath` is relative to the submodule directory. Use `../../` to reference directories in your monorepo root.
+</Note>
+
+### Pulling Updates
+
+```bash
+# Update submodule to latest
+cd packages/docs
+git pull origin main
+cd ../..
+git add packages/docs
+git commit -m "Update docs platform"
+```
+
+Or update all submodules:
+
+```bash
+git submodule update --remote --merge
+```
+
+### Contributing Back
+
+If you fix a bug or add a feature to the platform:
+
+```bash
+cd packages/docs
+git checkout -b fix/my-fix
+# make changes to src/ files (not content)
+git add . && git commit -m "Fix something"
+git push origin fix/my-fix
+# Create PR on the docs platform repo
+```
+
+<Warning>
+  Only commit changes to `src/`, `public/`, or platform config files. Your content and `docs.config.local.json` should stay in your monorepo, not the submodule.
+</Warning>
+
+### Docker with Submodule
+
+When building Docker images in a monorepo, adjust the build context and copy paths:
+
+```dockerfile
+# In your monorepo Dockerfile
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+# Copy submodule
+COPY packages/docs ./packages/docs
+
+# Copy your content and config into the submodule location
+COPY docs-content ./packages/docs/content/docs
+COPY docs.config.local.json ./packages/docs/docs.config.local.json
+
+WORKDIR /app/packages/docs
+RUN corepack enable && pnpm install --frozen-lockfile
+RUN pnpm build
+```
+
+Or use volume mounts in docker-compose:
+
+```yaml
+services:
+  docs:
+    build:
+      context: ./packages/docs
+    volumes:
+      - ../docs-content:/app/content/docs:ro
+      - ../docs.config.local.json:/app/docs.config.local.json:ro
+```
+
+---
+
+## Standalone Docker Deployment
+
+For standalone deployments (not as a submodule), use the following setup.
+
+### Quick Start
 
 Build and run with Docker Compose:
 
@@ -244,6 +383,16 @@ services:
     volumes:
       - ./content:/app/content:ro
       - ./docs.config.json:/app/docs.config.json:ro
+```
+
+If using a local config override:
+
+```yaml
+services:
+  docs:
+    volumes:
+      - ./my-docs-content:/app/content/docs:ro
+      - ./docs.config.local.json:/app/docs.config.local.json:ro
 ```
 
 <Note>

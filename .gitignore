@@ -23,6 +23,9 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# local config override (for submodule/monorepo use)
+docs.config.local.json
+
 # vercel
 .vercel
 

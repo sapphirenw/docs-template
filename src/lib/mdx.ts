@@ -5,8 +5,7 @@ import { compileMDX } from 'next-mdx-remote/rsc';
 import rehypePrettyCode from 'rehype-pretty-code';
 import remarkGfm from 'remark-gfm';
 import { mdxComponents } from '@/components/mdx';
-
-const CONTENT_DIR = path.join(process.cwd(), 'content/docs');
+import { getContentDir } from './config';
 
 export interface DocFrontmatter {
   title: string;
@@ -71,8 +70,8 @@ const prettyCodeOptions = {
 
 export async function getDocBySlug(slug: string): Promise<DocContent | null> {
   const slugPath = slug.replace(/,/g, '/');
-  const filePath = path.join(CONTENT_DIR, `${slugPath}.mdx`);
-  const mdFilePath = path.join(CONTENT_DIR, `${slugPath}.md`);
+  const filePath = path.join(getContentDir(), `${slugPath}.mdx`);
+  const mdFilePath = path.join(getContentDir(), `${slugPath}.md`);
 
   let fullPath = '';
   if (fs.existsSync(filePath)) {
@@ -129,8 +128,8 @@ export function getAllDocs(): string[] {
     }
   }
 
-  if (fs.existsSync(CONTENT_DIR)) {
-    walkDir(CONTENT_DIR);
+  if (fs.existsSync(getContentDir())) {
+    walkDir(getContentDir());
   }
 
   return docs;
@@ -138,8 +137,8 @@ export function getAllDocs(): string[] {
 
 export function getDocTitle(slug: string): string {
   const slugPath = slug.replace(/,/g, '/');
-  const filePath = path.join(CONTENT_DIR, `${slugPath}.mdx`);
-  const mdFilePath = path.join(CONTENT_DIR, `${slugPath}.md`);
+  const filePath = path.join(getContentDir(), `${slugPath}.mdx`);
+  const mdFilePath = path.join(getContentDir(), `${slugPath}.md`);
 
   let fullPath = '';
   if (fs.existsSync(filePath)) {
