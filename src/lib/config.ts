@@ -32,7 +32,8 @@ export interface DocsConfig {
 let configCache: DocsConfig | null = null;
 
 export function getConfig(): DocsConfig {
-  if (configCache) {
+  // Only cache in production for performance
+  if (process.env.NODE_ENV === 'production' && configCache) {
     return configCache;
   }
 
@@ -48,9 +49,13 @@ export function getConfig(): DocsConfig {
   }
 
   const configContent = fs.readFileSync(configPath, 'utf-8');
-  configCache = JSON.parse(configContent) as DocsConfig;
+  const config = JSON.parse(configContent) as DocsConfig;
 
-  return configCache;
+  if (process.env.NODE_ENV === 'production') {
+    configCache = config;
+  }
+
+  return config;
 }
 
 /**

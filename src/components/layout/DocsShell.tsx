@@ -4,21 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { SearchModal } from '@/components/layout/SearchModal';
-import docsConfig from '../../../docs.config.json';
+import { DocsConfig } from '@/lib/config';
 
-interface RootLayoutProps {
+interface DocsShellProps {
   children: React.ReactNode;
+  config: DocsConfig;
 }
 
 // Create search index from navigation
-function createSearchIndex() {
+function createSearchIndex(config: DocsConfig) {
   const index: Array<{
     slug: string;
     title: string;
     group: string;
   }> = [];
 
-  for (const group of docsConfig.navigation) {
+  for (const group of config.navigation) {
     for (const page of group.pages) {
       const title = page
         .split('/')
@@ -38,10 +39,10 @@ function createSearchIndex() {
 }
 
 // Create doc titles from navigation
-function createDocTitles() {
+function createDocTitles(config: DocsConfig) {
   const titles: Record<string, string> = {};
 
-  for (const group of docsConfig.navigation) {
+  for (const group of config.navigation) {
     for (const page of group.pages) {
       titles[page] = page
         .split('/')
@@ -54,12 +55,12 @@ function createDocTitles() {
   return titles;
 }
 
-export function RootLayout({ children }: RootLayoutProps) {
+export function DocsShell({ children, config }: DocsShellProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
-  const searchIndex = createSearchIndex();
-  const docTitles = createDocTitles();
+  const searchIndex = createSearchIndex(config);
+  const docTitles = createDocTitles(config);
 
   // Handle cmd+k shortcut
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -77,15 +78,16 @@ export function RootLayout({ children }: RootLayoutProps) {
   return (
     <div className="min-h-screen bg-background">
       <Header
-        siteName={docsConfig.name}
-        topbarLinks={docsConfig.topbarLinks}
+        siteName={config.name}
+        topbarLinks={config.topbarLinks}
         onMenuClick={() => setSidebarOpen(!sidebarOpen)}
         onSearchClick={() => setSearchOpen(true)}
       />
 
       <div className="flex max-w-screen-2xl mx-auto">
         <Sidebar
-          navigation={docsConfig.navigation}
+          config={config}
+          navigation={config.navigation}
           docTitles={docTitles}
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}

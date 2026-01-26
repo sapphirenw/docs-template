@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 import { getDocBySlug, getDocTitle } from '@/lib/mdx';
-import { getRootPageSlug, getAllDocSlugs } from '@/lib/config';
+import { getConfig, getRootPageSlug, getAllDocSlugs } from '@/lib/config';
 import { TableOfContents } from '@/components/layout/TableOfContents';
 import { DocNavigation } from '@/components/layout/DocNavigation';
-import { RootLayout } from '@/components/layout/RootLayout';
+import { DocsShell } from '@/components/layout/DocsShell';
 
 export async function generateMetadata(): Promise<Metadata> {
   const rootSlug = getRootPageSlug();
@@ -20,16 +20,17 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
+  const config = getConfig();
   const rootSlug = getRootPageSlug();
   const doc = await getDocBySlug(rootSlug);
 
   if (!doc) {
     return (
-      <RootLayout>
+      <DocsShell config={config}>
         <div className="flex items-center justify-center min-h-[50vh]">
           <p className="text-foreground-muted">No root page configured.</p>
         </div>
-      </RootLayout>
+      </DocsShell>
     );
   }
 
@@ -47,7 +48,7 @@ export default async function HomePage() {
   } : null;
 
   return (
-    <RootLayout>
+    <DocsShell config={config}>
       <div className="flex">
         {/* Main content */}
         <main className="flex-1 min-w-0 px-4 sm:px-6 lg:px-8 py-8">
@@ -77,6 +78,6 @@ export default async function HomePage() {
         {/* Table of Contents */}
         <TableOfContents headings={doc.headings} />
       </div>
-    </RootLayout>
+    </DocsShell>
   );
 }
