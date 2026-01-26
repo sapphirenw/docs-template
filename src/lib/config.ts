@@ -31,23 +31,38 @@ export interface DocsConfig {
 
 let configCache: DocsConfig | null = null;
 
+/**
+ * Resolve the config file path.
+ * Priority:
+ * 1. DOCS_CONFIG_PATH env var (absolute or relative to cwd)
+ * 2. docs.config.local.json (gitignored, for local overrides)
+ * 3. docs.config.json (default, committed to repo)
+ */
+function resolveConfigPath(): string {
+  // 1. Check environment variable
+  if (process.env.DOCS_CONFIG_PATH) {
+    const envPath = process.env.DOCS_CONFIG_PATH;
+    // Support both absolute and relative paths
+    return path.isAbsolute(envPath) ? envPath : path.join(process.cwd(), envPath);
+  }
+
+  // 2. Check for local config override
+  const localConfigPath = path.join(process.cwd(), 'docs.config.local.json');
+  if (fs.existsSync(localConfigPath)) {
+    return localConfigPath;
+  }
+
+  // 3. Default config
+  return path.join(process.cwd(), 'docs.config.json');
+}
+
 export function getConfig(): DocsConfig {
   // Only cache in production for performance
   if (process.env.NODE_ENV === 'production' && configCache) {
     return configCache;
   }
 
-  // Try local config first (for submodule/monorepo use), then fall back to default
-  const localConfigPath = path.join(process.cwd(), 'docs.config.local.json');
-  const defaultConfigPath = path.join(process.cwd(), 'docs.config.json');
-
-  let configPath: string;
-  if (fs.existsSync(localConfigPath)) {
-    configPath = localConfigPath;
-  } else {
-    configPath = defaultConfigPath;
-  }
-
+  const configPath = resolveConfigPath();
   const configContent = fs.readFileSync(configPath, 'utf-8');
   const config = JSON.parse(configContent) as DocsConfig;
 

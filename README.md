@@ -93,6 +93,28 @@ Edit `docs.config.json` to customize your site:
 | `topbarLinks` | array | `[]` | Links in the header |
 | `footerSocials` | object | `{}` | Social links in footer |
 
+### Config File Location
+
+The config file is resolved in this order:
+
+1. **`DOCS_CONFIG_PATH` env var** - Point to any config file
+2. **`docs.config.local.json`** - Local override (gitignored)
+3. **`docs.config.json`** - Default config (committed)
+
+For production deployments, set the env var:
+
+```bash
+# In .env.local (gitignored)
+DOCS_CONFIG_PATH=./my-docs-config.json
+
+# Or when running
+DOCS_CONFIG_PATH=/path/to/config.json pnpm dev
+
+# Or in docker-compose.yml
+environment:
+  - DOCS_CONFIG_PATH=/app/config/docs.config.json
+```
+
 ### URL Structure
 
 All documentation pages are served directly from the root:
