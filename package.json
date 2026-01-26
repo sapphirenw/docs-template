@@ -1,5 +1,5 @@
 {
-  "name": "doc-hosting-platform",
+  "name": "@repo/docs",
   "version": "1.0.0",
   "description": "Modern documentation platform powered by MDX",
   "private": true,
