@@ -38,16 +38,43 @@ export default function RootLayout({
 }) {
   const config = getConfig();
   const primaryRgb = hexToRgb(config.colors.primary);
+  const backgroundRgb = config.colors.background ? hexToRgb(config.colors.background) : null;
+  const darkBackgroundRgb = config.colors.darkBackground ? hexToRgb(config.colors.darkBackground) : null;
+  const customFont = config.font;
+
+  // Build dynamic CSS for config-driven values
+  let dynamicCss = `:root { --primary: ${primaryRgb};`;
+  if (backgroundRgb) {
+    dynamicCss += ` --background: ${backgroundRgb};`;
+  }
+  if (customFont) {
+    dynamicCss += ` --font-inter: "${customFont}", ui-sans-serif, system-ui, sans-serif;`;
+  }
+  dynamicCss += ` }`;
+
+  dynamicCss += ` .dark { --primary: ${primaryRgb};`;
+  if (darkBackgroundRgb) {
+    dynamicCss += ` --background: ${darkBackgroundRgb};`;
+  }
+  if (customFont) {
+    dynamicCss += ` --font-inter: "${customFont}", ui-sans-serif, system-ui, sans-serif;`;
+  }
+  dynamicCss += ` }`;
+
+  // Google Fonts URL for custom font
+  const googleFontUrl = customFont
+    ? `https://fonts.googleapis.com/css2?family=${encodeURIComponent(customFont)}:wght@400;500;600;700&display=swap`
+    : null;
 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {googleFontUrl && (
+          <link rel="stylesheet" href={googleFontUrl} />
+        )}
         <style
           dangerouslySetInnerHTML={{
-            __html: `
-              :root { --primary: ${primaryRgb}; }
-              .dark { --primary: ${primaryRgb}; }
-            `,
+            __html: dynamicCss,
           }}
         />
       </head>

@@ -16,7 +16,13 @@ export interface DocsConfig {
   colors: {
     primary: string;
     accent: string;
+    /** Background color for light mode (hex format). Defaults to white. */
+    background?: string;
+    /** Background color for dark mode (hex format). Defaults to zinc-950. */
+    darkBackground?: string;
   };
+  /** Google Font name for the primary sans-serif font (e.g., "Roboto", "Open Sans"). Defaults to Inter. */
+  font?: string;
   navigation: NavItem[];
   topbarLinks: Array<{
     name: string;

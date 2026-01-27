@@ -19,8 +19,11 @@ The main configuration is in `docs.config.json`:
   },
   "colors": {
     "primary": "#18E299",
-    "accent": "#0d9373"
+    "accent": "#0d9373",
+    "background": "#ffffff",
+    "darkBackground": "#0a0a0b"
   },
+  "font": "Inter",
   "navigation": [...],
   "topbarLinks": [...],
   "footerSocials": {...}
@@ -46,6 +49,27 @@ To change it, update the `colors.primary` value:
   }
 }
 ```
+
+### Background Colors
+
+You can customize the background color for both light and dark modes:
+
+```json
+{
+  "colors": {
+    "primary": "#3B82F6",
+    "background": "#f8fafc",
+    "darkBackground": "#0f172a"
+  }
+}
+```
+
+- `background` - The background color for light mode (defaults to white `#ffffff`)
+- `darkBackground` - The background color for dark mode (defaults to zinc-950 `#09090b`)
+
+<Note>
+  Both background color options are optional. If not specified, the default values are used.
+</Note>
 
 ### Tailwind Configuration
 
@@ -76,9 +100,34 @@ theme: {
 
 ### Fonts
 
-The default fonts are Inter (sans-serif) and JetBrains Mono (monospace). To change them:
+The default fonts are Inter (sans-serif) and JetBrains Mono (monospace).
 
-1. Update the font imports in `src/app/layout.tsx`:
+#### Quick Setup via Config
+
+The easiest way to change the primary font is through the config file using any [Google Font](https://fonts.google.com):
+
+```json
+{
+  "font": "Roboto"
+}
+```
+
+Popular font options include:
+- `"Inter"` (default)
+- `"Roboto"`
+- `"Open Sans"`
+- `"Lato"`
+- `"Poppins"`
+- `"Nunito"`
+- `"Source Sans Pro"`
+
+<Note>
+  The font name must match the Google Fonts name exactly. The font will be loaded with weights 400, 500, 600, and 700.
+</Note>
+
+#### Advanced: Custom Font Setup
+
+For more control over fonts (custom weights, monospace font changes, etc.), update the font imports in `src/app/layout.tsx`:
 
 ```typescript
 import { Poppins, Fira_Code } from 'next/font/google';
