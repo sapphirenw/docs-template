@@ -6,36 +6,36 @@ import { useEffect, useState } from 'react';
 import { clsx } from 'clsx';
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+	const { theme, setTheme } = useTheme();
+	const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
-  if (!mounted) {
-    return (
-      <button className="p-2 rounded-lg hover:bg-background-muted">
-        <div className="w-5 h-5" />
-      </button>
-    );
-  }
+	if (!mounted) {
+		return (
+			<button className="rounded-lg p-2 hover:bg-background-muted">
+				<div className="h-5 w-5" />
+			</button>
+		);
+	}
 
-  return (
-    <button
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      className={clsx(
-        'p-2 rounded-lg transition-colors duration-200',
-        'hover:bg-background-muted',
-        'focus:outline-none focus:ring-2 focus:ring-primary-500/50'
-      )}
-      aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-    >
-      {theme === 'dark' ? (
-        <Sun className="w-5 h-5 text-foreground-muted" />
-      ) : (
-        <Moon className="w-5 h-5 text-foreground-muted" />
-      )}
-    </button>
-  );
+	return (
+		<button
+			onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+			className={clsx(
+				'rounded-lg p-2 transition-colors duration-200',
+				'hover:bg-background-muted',
+				'focus:outline-none focus:ring-2 focus:ring-primary-500/50'
+			)}
+			aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+		>
+			{theme === 'dark' ? (
+				<Sun className="h-5 w-5 text-foreground-muted" />
+			) : (
+				<Moon className="h-5 w-5 text-foreground-muted" />
+			)}
+		</button>
+	);
 }

@@ -52,46 +52,49 @@ Edit `docs.config.json` to customize your site:
 
 ```json
 {
-  "name": "My Docs",
-  "description": "Documentation for My Project",
-  "contentPath": "content/docs",
-  "rootPage": "getting-started/introduction",
-  "logo": {
-    "light": "/logo.svg",
-    "dark": "/logo-dark.svg"
-  },
-  "colors": {
-    "primary": "#18E299",
-    "accent": "#0d9373"
-  },
-  "navigation": [
-    {
-      "group": "Getting Started",
-      "pages": ["getting-started/introduction", "getting-started/quickstart"]
-    }
-  ],
-  "topbarLinks": [
-    { "name": "GitHub", "url": "https://github.com/your-org/your-repo" }
-  ],
-  "footerSocials": {
-    "github": "https://github.com/your-org"
-  }
+	"name": "My Docs",
+	"description": "Documentation for My Project",
+	"contentPath": "content/docs",
+	"rootPage": "getting-started/introduction",
+	"logo": {
+		"light": "/logo.svg",
+		"dark": "/logo-dark.svg"
+	},
+	"colors": {
+		"primary": "#18E299",
+		"accent": "#0d9373"
+	},
+	"navigation": [
+		{
+			"group": "Getting Started",
+			"pages": [
+				"getting-started/introduction",
+				"getting-started/quickstart"
+			]
+		}
+	],
+	"topbarLinks": [
+		{ "name": "GitHub", "url": "https://github.com/your-org/your-repo" }
+	],
+	"footerSocials": {
+		"github": "https://github.com/your-org"
+	}
 }
 ```
 
 ### Config Options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `name` | string | required | Site name displayed in header |
-| `description` | string | required | Site description for SEO |
-| `contentPath` | string | `"content/docs"` | Path to documentation content |
-| `rootPage` | string | first nav page | Doc page to show at `/` (see below) |
-| `logo` | object | required | Light/dark logo paths |
-| `colors` | object | required | Primary and accent colors |
-| `navigation` | array | required | Sidebar navigation structure |
-| `topbarLinks` | array | `[]` | Links in the header |
-| `footerSocials` | object | `{}` | Social links in footer |
+| Option          | Type   | Default          | Description                         |
+| --------------- | ------ | ---------------- | ----------------------------------- |
+| `name`          | string | required         | Site name displayed in header       |
+| `description`   | string | required         | Site description for SEO            |
+| `contentPath`   | string | `"content/docs"` | Path to documentation content       |
+| `rootPage`      | string | first nav page   | Doc page to show at `/` (see below) |
+| `logo`          | object | required         | Light/dark logo paths               |
+| `colors`        | object | required         | Primary and accent colors           |
+| `navigation`    | array  | required         | Sidebar navigation structure        |
+| `topbarLinks`   | array  | `[]`             | Links in the header                 |
+| `footerSocials` | object | `{}`             | Social links in footer              |
 
 ### Config File Location
 
@@ -118,6 +121,7 @@ environment:
 ### URL Structure
 
 All documentation pages are served directly from the root:
+
 - `/` - Shows the configured `rootPage` (or first page in navigation)
 - `/getting-started/quickstart` - Documentation pages
 - `/components/overview` - Component documentation
@@ -128,7 +132,7 @@ The `rootPage` option controls what content appears at your domain root (`/`):
 
 ```json
 {
-  "rootPage": "getting-started/introduction"
+	"rootPage": "getting-started/introduction"
 }
 ```
 
@@ -136,7 +140,7 @@ To create a custom landing page, create an MDX file (e.g., `content/docs/home.md
 
 ```json
 {
-  "rootPage": "home"
+	"rootPage": "home"
 }
 ```
 
@@ -154,16 +158,17 @@ Your `home.mdx` can use any MDX components to create a custom welcome page while
 
 ### Tabs & Code Groups
 
-```mdx
+````mdx
 <Tabs>
-  <Tab title="npm">npm install package</Tab>
-  <Tab title="pnpm">pnpm add package</Tab>
+	<Tab title="npm">npm install package</Tab>
+	<Tab title="pnpm">pnpm add package</Tab>
 </Tabs>
 
 <CodeGroup>
 ```js title="example.js"
 console.log('Hello');
-```
+````
+
 </CodeGroup>
 ```
 
@@ -171,12 +176,16 @@ console.log('Hello');
 
 ```mdx
 <CardGroup cols={2}>
-  <Card title="Getting Started" icon="rocket" href="/getting-started/quickstart">
-    Learn the basics
-  </Card>
-  <Card title="API Reference" icon="code" href="/api/reference">
-    Explore the API
-  </Card>
+	<Card
+		title="Getting Started"
+		icon="rocket"
+		href="/getting-started/quickstart"
+	>
+		Learn the basics
+	</Card>
+	<Card title="API Reference" icon="code" href="/api/reference">
+		Explore the API
+	</Card>
 </CardGroup>
 ```
 
@@ -184,12 +193,12 @@ console.log('Hello');
 
 ```mdx
 <Steps>
-  <Step title="Install dependencies">
-    Run `pnpm install` to install all dependencies.
-  </Step>
-  <Step title="Start the server">
-    Run `pnpm dev` to start the development server.
-  </Step>
+	<Step title="Install dependencies">
+		Run `pnpm install` to install all dependencies.
+	</Step>
+	<Step title="Start the server">
+		Run `pnpm dev` to start the development server.
+	</Step>
 </Steps>
 ```
 
@@ -197,11 +206,11 @@ console.log('Hello');
 
 ```mdx
 <Phone variant="dark" caption="Home screen">
-  <img src="/screenshots/home.png" alt="Home" />
+	<img src="/screenshots/home.png" alt="Home" />
 </Phone>
 
 <Frame hint="Click to expand" caption="Dashboard view">
-  <img src="/screenshots/dashboard.png" alt="Dashboard" />
+	<img src="/screenshots/dashboard.png" alt="Dashboard" />
 </Frame>
 ```
 
@@ -240,6 +249,7 @@ Create `docs.config.local.json` (gitignored) to override configuration:
 ```
 
 The platform loads `docs.config.local.json` first if it exists, allowing you to:
+
 - Keep your content outside the submodule
 - Pull platform updates without conflicts
 - Maintain separate configuration

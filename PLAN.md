@@ -1,9 +1,11 @@
 # Documentation Platform - Project Plan
 
 ## Overview
+
 A modern documentation visualization tool inspired by Mintlify/GitBook, powered by local markdown (MD) and MDX files.
 
 ## Tech Stack
+
 - **Framework**: Next.js 14 (App Router)
 - **Language**: TypeScript
 - **Package Manager**: pnpm
@@ -16,6 +18,7 @@ A modern documentation visualization tool inspired by Mintlify/GitBook, powered 
 ## Key Features
 
 ### Core
+
 - [x] Project setup with Next.js, TypeScript, pnpm
 - [x] MDX file processing and rendering
 - [x] File-based routing for docs
@@ -23,6 +26,7 @@ A modern documentation visualization tool inspired by Mintlify/GitBook, powered 
 - [x] Configuration file (docs.config.json)
 
 ### Layout
+
 - [x] Main documentation layout
 - [x] Responsive sidebar navigation
 - [x] Table of contents (right sidebar)
@@ -30,6 +34,7 @@ A modern documentation visualization tool inspired by Mintlify/GitBook, powered 
 - [x] Mobile-friendly responsive design
 
 ### Styling
+
 - [x] Dark/Light mode toggle
 - [x] Mintlify-inspired color scheme (teal/green accent)
 - [x] Modern typography with Inter font
@@ -37,6 +42,7 @@ A modern documentation visualization tool inspired by Mintlify/GitBook, powered 
 - [x] Glassmorphism effects on navigation
 
 ### Components
+
 - [x] Callouts (Note, Warning, Tip, Info, Success, Danger)
 - [x] Code blocks with copy functionality
 - [x] Code groups (tabbed code examples)
@@ -47,6 +53,7 @@ A modern documentation visualization tool inspired by Mintlify/GitBook, powered 
 - [x] Frame for images
 
 ### Navigation
+
 - [x] Search functionality with modal
 - [x] Keyboard shortcuts (⌘K for search)
 - [x] Nested navigation groups
@@ -69,6 +76,7 @@ pnpm start
 ```
 
 ## Directory Structure
+
 ```
 /
 ├── src/
@@ -125,31 +133,36 @@ pnpm start
 ```
 
 ## Configuration Format (docs.config.json)
+
 ```json
 {
-  "name": "Documentation",
-  "logo": {
-    "light": "/logo-light.svg",
-    "dark": "/logo-dark.svg"
-  },
-  "colors": {
-    "primary": "#18E299",
-    "accent": "#0D9373"
-  },
-  "navigation": [
-    {
-      "group": "Getting Started",
-      "pages": ["getting-started/introduction", "getting-started/quickstart"]
-    }
-  ],
-  "topbarLinks": [],
-  "footerSocials": {}
+	"name": "Documentation",
+	"logo": {
+		"light": "/logo-light.svg",
+		"dark": "/logo-dark.svg"
+	},
+	"colors": {
+		"primary": "#18E299",
+		"accent": "#0D9373"
+	},
+	"navigation": [
+		{
+			"group": "Getting Started",
+			"pages": [
+				"getting-started/introduction",
+				"getting-started/quickstart"
+			]
+		}
+	],
+	"topbarLinks": [],
+	"footerSocials": {}
 }
 ```
 
 ## Status: Complete
 
 All major features have been implemented:
+
 - Full MDX support with custom components
 - Modern, Mintlify-inspired UI design
 - Dark/light mode support
