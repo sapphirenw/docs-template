@@ -28,6 +28,7 @@ docs.config.local.json
 
 # vercel
 .vercel
+.turbo
 
 # typescript
 *.tsbuildinfo
