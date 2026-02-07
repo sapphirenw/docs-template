@@ -73,7 +73,7 @@ export function Sidebar({
 				{/* Powered by watermark */}
 				<div className="shrink-0 border-t border-border px-4 py-4">
 					<a
-						href="https://landersweb.com"
+						href="https://sapphirenw.com"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="group flex items-center gap-2 text-xs text-foreground-muted/60 transition-colors hover:text-foreground-muted"
@@ -81,7 +81,7 @@ export function Sidebar({
 						<Zap className="h-3.5 w-3.5 text-primary-500/60 transition-colors group-hover:text-primary-500" />
 						<span>
 							Powered by{' '}
-							<span className="font-medium">LandersWeb</span>
+							<span className="font-medium">Sapphire NW</span>
 						</span>
 					</a>
 				</div>

@@ -1,4 +1,30 @@
 import { defineConfig } from 'tsup';
+import fs from 'fs';
+import path from 'path';
+
+/**
+ * Post-build: prepend "use client" to shared chunks that contain React hooks.
+ * tsup's banner option only applies to entry files, not code-split chunks.
+ * Handler entries are server code, but their shared chunks may contain
+ * client components (DocsShell, ThemeProvider, etc.) that need the directive.
+ */
+function addUseClientToChunks() {
+  const distDir = path.resolve('dist');
+  const files = fs.readdirSync(distDir);
+
+  for (const file of files) {
+    if (!file.startsWith('chunk-') || !file.endsWith('.mjs')) continue;
+    const filePath = path.join(distDir, file);
+    const content = fs.readFileSync(filePath, 'utf-8');
+    // If the chunk imports hooks from react, it contains client components
+    if (
+      content.includes('from "react"') ||
+      content.includes("from 'react'")
+    ) {
+      fs.writeFileSync(filePath, `"use client";\n${content}`);
+    }
+  }
+}
 
 export default defineConfig([
   // Client-side components bundle
@@ -20,7 +46,7 @@ export default defineConfig([
       options.jsx = 'automatic';
     },
   },
-  // Server-side handlers (no "use client" banner)
+  // Server-side handlers (no "use client" banner on entries)
   {
     entry: {
       'handlers/root-layout': 'src/handlers/root-layout.tsx',
@@ -37,6 +63,9 @@ export default defineConfig([
     external: ['next', 'react', 'react-dom', 'next/font', 'next/font/google'],
     esbuildOptions(options) {
       options.jsx = 'automatic';
+    },
+    onSuccess: async () => {
+      addUseClientToChunks();
     },
   },
 ]);
