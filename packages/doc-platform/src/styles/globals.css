@@ -89,7 +89,7 @@
   }
 
   html {
-    @apply antialiased scroll-smooth;
+    @apply antialiased scroll-smooth scroll-pt-16;
   }
 
   body {
