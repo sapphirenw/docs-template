@@ -1,0 +1,255 @@
+---
+title: Quickstart
+description: Get your documentation site up and running in minutes
+---
+
+This guide walks you through creating a new documentation site using the `doc-platform` package.
+
+## Prerequisites
+
+- Node.js 18+
+- pnpm (`corepack enable && corepack prepare pnpm@latest --activate`)
+
+## Setup
+
+<Steps>
+  <Step title="Create your project">
+    ```bash
+    mkdir my-docs && cd my-docs
+    pnpm init
+    ```
+  </Step>
+
+  <Step title="Install dependencies">
+    ```bash
+    pnpm add doc-platform next@^16 react@^19 react-dom@^19
+    pnpm add -D tailwindcss@^4 @tailwindcss/postcss@^4 postcss typescript @types/react @types/node
+    ```
+  </Step>
+
+  <Step title="Create config files">
+    **`next.config.mjs`**:
+    ```javascript
+    const nextConfig = { transpilePackages: ['doc-platform'] };
+    export default nextConfig;
+    ```
+
+    **`postcss.config.js`**:
+    ```javascript
+    module.exports = {
+      plugins: {
+        '@tailwindcss/postcss': {},
+      },
+    };
+    ```
+  </Step>
+
+  <Step title="Create route files">
+    **`src/app/globals.css`**:
+    ```css
+    @import "tailwindcss";
+    @import "doc-platform/styles";
+    ```
+
+    **`src/app/layout.tsx`**:
+    ```tsx
+    import { createRootLayout } from 'doc-platform/handlers/root-layout';
+    import { Inter, JetBrains_Mono } from 'next/font/google';
+    import './globals.css';
+
+    const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+    const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
+
+    const { RootLayout, generateMetadata } = createRootLayout({
+      fontClassNames: `${inter.variable} ${mono.variable}`,
+    });
+
+    export { generateMetadata };
+    export default RootLayout;
+    ```
+
+    **`src/app/page.tsx`**:
+    ```tsx
+    import { createHomePage } from 'doc-platform/handlers/home-page';
+    const { HomePage, generateMetadata } = createHomePage();
+    export { generateMetadata };
+    export default HomePage;
+    ```
+
+    **`src/app/[...slug]/layout.tsx`**:
+    ```tsx
+    import { createDocLayout } from 'doc-platform/handlers/doc-layout';
+    const { DocLayout } = createDocLayout();
+    export default DocLayout;
+    ```
+
+    **`src/app/[...slug]/page.tsx`**:
+    ```tsx
+    import { createDocPage } from 'doc-platform/handlers/doc-page';
+    const { DocPage, generateStaticParams, generateMetadata } = createDocPage();
+    export { generateStaticParams, generateMetadata };
+    export default DocPage;
+    ```
+  </Step>
+
+  <Step title="Add your site config">
+    Create `docs.config.json` in the project root:
+
+    ```json
+    {
+      "name": "My Project Docs",
+      "description": "Documentation for My Project",
+      "logo": {
+        "light": "/logo.svg",
+        "dark": "/logo.svg"
+      },
+      "colors": {
+        "primary": "#3B82F6",
+        "accent": "#2563EB"
+      },
+      "navigation": [
+        {
+          "group": "Getting Started",
+          "pages": [
+            "getting-started/introduction",
+            "getting-started/installation"
+          ]
+        }
+      ],
+      "topbarLinks": [],
+      "footerSocials": {}
+    }
+    ```
+  </Step>
+
+  <Step title="Write your first page">
+    Create `content/docs/getting-started/introduction.mdx`:
+
+    ```mdx
+    ---
+    title: Introduction
+    description: Welcome to My Project
+    ---
+
+    # Welcome
+
+    This is my project documentation.
+
+    <Tip>
+      Use MDX components to enhance your docs.
+    </Tip>
+    ```
+  </Step>
+
+  <Step title="Add scripts and run">
+    Add to `package.json`:
+    ```json
+    {
+      "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start"
+      }
+    }
+    ```
+
+    Then start the dev server:
+    ```bash
+    pnpm dev
+    ```
+  </Step>
+</Steps>
+
+Open `http://localhost:3000` to see your docs.
+
+<Note>
+  Changes to MDX files hot-reload automatically. Changes to `docs.config.json` require a server restart.
+</Note>
+
+## Project Structure
+
+```
+my-docs/
+├── content/
+│   └── docs/           # Your documentation files (MDX)
+│       └── getting-started/
+│           └── introduction.mdx
+├── public/             # Static assets (logos, images)
+├── src/
+│   └── app/            # 4 thin route files (~5 lines each)
+├── docs.config.json    # All branding, colors, navigation
+├── next.config.mjs
+├── postcss.config.js
+└── package.json
+```
+
+## Configure Your Site
+
+Everything in `docs.config.json`:
+
+```json
+{
+  "name": "My Project Docs",
+  "description": "Documentation for My Project",
+  "logo": { "light": "/logo-light.svg", "dark": "/logo-dark.svg" },
+  "colors": {
+    "primary": "#18E299",
+    "accent": "#0d9373",
+    "background": "#ffffff",
+    "darkBackground": "#0a0a0b"
+  },
+  "font": "Inter",
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": ["getting-started/introduction"]
+    }
+  ],
+  "topbarLinks": [
+    { "name": "GitHub", "url": "https://github.com/your-org/your-repo" }
+  ],
+  "footerSocials": {
+    "github": "https://github.com/your-org"
+  }
+}
+```
+
+| Field | Purpose |
+|-------|---------|
+| `name` | Site title shown in header and browser tab |
+| `description` | Default meta description |
+| `logo` | Light/dark logo paths (relative to `public/`) |
+| `colors.primary` | Accent color used throughout the site |
+| `colors.background` | Light mode background (optional) |
+| `colors.darkBackground` | Dark mode background (optional) |
+| `font` | Google Font name for the body text (optional) |
+| `navigation` | Sidebar groups and page slugs |
+| `topbarLinks` | External links in the header |
+| `footerSocials` | Social links in the sidebar footer |
+
+## Deploy
+
+When ready, build for production and deploy:
+
+```bash
+pnpm build
+```
+
+This works with any Next.js hosting — Vercel, Docker, or any Node.js server. See the [Deployment guide](/guides/deployment) for Docker setup and CI/CD.
+
+## What's Next?
+
+<CardGroup cols={2}>
+  <Card title="Writing Content" href="/getting-started/writing-content" icon="FileText">
+    Learn MDX syntax and frontmatter options.
+  </Card>
+  <Card title="Components" href="/components/overview" icon="Blocks">
+    Explore available MDX components.
+  </Card>
+  <Card title="Customization" href="/guides/customization" icon="Settings">
+    Customize colors, fonts, and branding.
+  </Card>
+  <Card title="Deployment" href="/guides/deployment" icon="Rocket">
+    Docker deployment and CI/CD setup.
+  </Card>
+</CardGroup>

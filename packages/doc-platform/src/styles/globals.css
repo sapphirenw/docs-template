@@ -1,0 +1,344 @@
+/* Dark mode variant (replaces darkMode: 'class') */
+@custom-variant dark (&:is(.dark *));
+
+/* Typography plugin */
+@plugin "@tailwindcss/typography";
+
+/* Source directives for package component scanning */
+@source "../components/**/*.tsx";
+@source "../handlers/**/*.tsx";
+
+/* Theme: colors, fonts, animations (replaces JS preset) */
+@theme {
+  --color-primary-50: rgb(var(--primary) / 0.05);
+  --color-primary-100: rgb(var(--primary) / 0.1);
+  --color-primary-200: rgb(var(--primary) / 0.2);
+  --color-primary-300: rgb(var(--primary) / 0.3);
+  --color-primary-400: rgb(var(--primary) / 0.7);
+  --color-primary-500: rgb(var(--primary));
+  --color-primary-600: rgb(var(--primary) / 0.85);
+  --color-primary-700: rgb(var(--primary) / 0.7);
+  --color-primary-800: rgb(var(--primary) / 0.6);
+  --color-primary-900: rgb(var(--primary) / 0.5);
+  --color-primary-950: rgb(var(--primary) / 0.4);
+
+  --color-background: rgb(var(--background));
+  --color-background-soft: rgb(var(--background-soft));
+  --color-background-muted: rgb(var(--background-muted));
+
+  --color-foreground: rgb(var(--foreground));
+  --color-foreground-muted: rgb(var(--foreground-muted));
+  --color-foreground-soft: rgb(var(--foreground-soft));
+
+  --color-border: rgb(var(--border));
+  --color-border-soft: rgb(var(--border-soft));
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-mono-var), 'JetBrains Mono', Menlo, monospace;
+
+  --animate-fade-in: fadeIn 0.2s ease-out;
+  --animate-slide-in: slideIn 0.2s ease-out;
+  --animate-scale-in: scaleIn 0.15s ease-out;
+
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes slideIn {
+    0% { transform: translateY(-10px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  @keyframes scaleIn {
+    0% { transform: scale(0.95); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+}
+
+/* Base layer: CSS variables for light/dark, base element styles */
+@layer base {
+  :root {
+    /* Light mode colors - RGB values for opacity support */
+    --background: 255 255 255;
+    --background-soft: 249 250 251;
+    --background-muted: 243 244 246;
+    --foreground: 17 24 39;
+    --foreground-muted: 107 114 128;
+    --foreground-soft: 156 163 175;
+    --border: 229 231 235;
+    --border-soft: 243 244 246;
+    --primary: 24 226 153;
+  }
+
+  .dark {
+    /* Dark mode colors - RGB values for opacity support */
+    --background: 9 9 11;
+    --background-soft: 17 17 19;
+    --background-muted: 24 24 27;
+    --foreground: 250 250 250;
+    --foreground-muted: 161 161 170;
+    --foreground-soft: 113 113 122;
+    --border: 39 39 42;
+    --border-soft: 24 24 27;
+    --primary: 24 226 153;
+  }
+
+  * {
+    border-color: rgb(var(--border));
+  }
+
+  html {
+    @apply antialiased scroll-smooth;
+  }
+
+  body {
+    background-color: rgb(var(--background));
+    color: rgb(var(--foreground));
+    @apply font-sans;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-1.5 h-1.5;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--border));
+    @apply rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(var(--foreground-soft));
+  }
+
+  /* Selection */
+  ::selection {
+    background-color: rgb(var(--primary) / 0.2);
+    color: rgb(var(--foreground));
+  }
+}
+
+/* Components layer: prose overrides, sidebar-link, toc-link, glass */
+@layer components {
+  /* Prose adjustments */
+  .prose {
+    max-width: none;
+    --tw-prose-body: rgb(var(--foreground));
+    --tw-prose-headings: rgb(var(--foreground));
+    --tw-prose-links: rgb(var(--primary));
+    --tw-prose-bold: rgb(var(--foreground));
+    --tw-prose-counters: rgb(var(--foreground-muted));
+    --tw-prose-bullets: rgb(var(--foreground-soft));
+    --tw-prose-hr: rgb(var(--border));
+    --tw-prose-quotes: rgb(var(--foreground));
+    --tw-prose-quote-borders: rgb(var(--primary));
+    --tw-prose-captions: rgb(var(--foreground-muted));
+    --tw-prose-code: rgb(var(--foreground));
+    --tw-prose-pre-code: rgb(var(--foreground));
+    --tw-prose-pre-bg: rgb(var(--background-soft));
+    --tw-prose-th-borders: rgb(var(--border));
+    --tw-prose-td-borders: rgb(var(--border-soft));
+  }
+
+  /* Sidebar link */
+  .sidebar-link {
+    @apply relative flex items-center gap-2 px-2 py-1 text-[13px] rounded-md transition-all duration-150;
+    color: rgb(var(--foreground-muted));
+  }
+
+  .sidebar-link:hover {
+    color: rgb(var(--foreground));
+  }
+
+  .sidebar-link.active {
+    color: rgb(var(--primary));
+    @apply font-medium;
+  }
+
+  .sidebar-link.active::before {
+    content: '';
+    @apply absolute -left-[13px] w-0.5 h-4 rounded-full;
+    background-color: rgb(var(--primary));
+  }
+
+  /* TOC link */
+  .toc-link {
+    @apply relative block py-1 text-[13px] transition-colors duration-150 pl-3 border-l-2 border-transparent -ml-px;
+    color: rgb(var(--foreground-soft));
+  }
+
+  .toc-link:hover {
+    color: rgb(var(--foreground));
+  }
+
+  .toc-link.active {
+    color: rgb(var(--primary));
+    border-left-color: rgb(var(--primary));
+    @apply font-medium;
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply backdrop-blur-xl;
+    background-color: rgb(var(--background) / 0.8);
+    border-color: rgb(var(--border));
+  }
+}
+
+/* Custom utilities */
+@utility scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ===========================================
+   Syntax Highlighting (rehype-pretty-code)
+   =========================================== */
+
+/* Code block container */
+[data-rehype-pretty-code-figure] {
+  @apply my-4;
+}
+
+/* Pre element styling */
+[data-rehype-pretty-code-figure] pre {
+  @apply overflow-x-auto rounded-lg py-4 px-0 text-sm leading-relaxed;
+  background-color: #0a0a0c !important;
+  border: 1px solid rgb(var(--border) / 0.5);
+}
+
+/* Light mode adjustments */
+:root:not(.dark) [data-rehype-pretty-code-figure] pre {
+  background-color: #fafafa !important;
+  border: 1px solid rgb(var(--border));
+}
+
+/* Code element inside pre */
+[data-rehype-pretty-code-figure] pre code {
+  @apply grid font-mono text-[13px];
+  counter-reset: line;
+}
+
+/* Shiki dual-theme color application */
+[data-rehype-pretty-code-figure] pre code span {
+  color: var(--shiki-dark);
+}
+
+:root:not(.dark) [data-rehype-pretty-code-figure] pre code span {
+  color: var(--shiki-light);
+}
+
+/* Line styling */
+[data-rehype-pretty-code-figure] pre code > [data-line] {
+  @apply px-4 border-l-2 border-transparent;
+}
+
+/* Highlighted lines */
+[data-rehype-pretty-code-figure] pre code > [data-line].highlighted {
+  @apply bg-white/5 border-l-primary-500;
+}
+
+/* Line numbers (if enabled) */
+[data-rehype-pretty-code-figure] pre code[data-line-numbers] > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  @apply inline-block w-4 mr-4 text-right text-gray-500;
+}
+
+/* Code title/filename */
+[data-rehype-pretty-code-title] {
+  @apply px-4 py-2 text-xs font-mono border border-b-0 border-border rounded-t-lg;
+  @apply text-gray-500 bg-gray-100;
+}
+
+.dark [data-rehype-pretty-code-title] {
+  @apply text-gray-400 bg-[#161b22];
+}
+
+[data-rehype-pretty-code-title] + pre {
+  @apply rounded-t-none mt-0;
+}
+
+/* Inline code */
+[data-rehype-pretty-code-figure] code[data-line-numbers-max-digits="1"] > [data-line]::before {
+  @apply w-2;
+}
+
+[data-rehype-pretty-code-figure] code[data-line-numbers-max-digits="2"] > [data-line]::before {
+  @apply w-4;
+}
+
+/* Highlighted chars */
+.highlighted-chars {
+  @apply bg-primary-500/20 rounded-sm px-1 py-0.5;
+}
+
+/* Ensure code blocks have proper font */
+pre code,
+code {
+  font-family: var(--font-mono-var), 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Inline code (not in pre) */
+:not(pre) > code {
+  @apply relative rounded-sm bg-background-muted px-[0.4em] py-[0.2em] font-mono text-[0.875em];
+  color: rgb(var(--foreground));
+}
+
+/* ===========================================
+   Table Styling
+   =========================================== */
+
+/* Table wrapper for overflow */
+.prose table {
+  @apply w-full text-sm my-4;
+  display: table;
+  border-collapse: collapse;
+}
+
+.prose thead {
+  border-bottom: 1px solid rgb(var(--border));
+}
+
+.prose thead tr {
+  border-bottom: 1px solid rgb(var(--border));
+}
+
+.prose thead th {
+  @apply px-3 py-2 text-left text-xs font-semibold uppercase tracking-wider;
+  color: rgb(var(--foreground-muted));
+  background-color: rgb(var(--background-soft));
+}
+
+.prose tbody tr {
+  border-bottom: 1px solid rgb(var(--border-soft));
+}
+
+.prose tbody tr:last-child {
+  border-bottom: none;
+}
+
+.prose tbody td {
+  @apply px-3 py-2 align-top;
+  color: rgb(var(--foreground));
+}
+
+/* First column often has code/names */
+.prose tbody td:first-child {
+  @apply font-medium;
+}
+
+/* Make tables scrollable on mobile */
+.table-wrapper {
+  @apply overflow-x-auto -mx-4 px-4;
+}

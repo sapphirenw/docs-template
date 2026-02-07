@@ -1,0 +1,292 @@
+---
+title: Customization
+description: Learn how to customize the look and feel of your documentation
+---
+
+This guide covers all the ways you can customize your documentation site. All visual customization flows from `docs.config.json` — you don't need to edit CSS or Tailwind config directly.
+
+## Configuration File
+
+The main configuration is in `docs.config.json` at your project root:
+
+```json
+{
+  "name": "My Documentation",
+  "description": "Documentation for my project",
+  "logo": {
+    "light": "/logo-light.svg",
+    "dark": "/logo-dark.svg"
+  },
+  "colors": {
+    "primary": "#18E299",
+    "accent": "#0d9373",
+    "background": "#ffffff",
+    "darkBackground": "#0a0a0b"
+  },
+  "font": "Inter",
+  "navigation": [...],
+  "topbarLinks": [...],
+  "footerSocials": {...}
+}
+```
+
+## Colors
+
+### Primary Color
+
+The primary color is used for:
+- Links and buttons
+- Active navigation states
+- Accent highlights
+- Focus rings
+
+To change it, update the `colors.primary` value:
+
+```json
+{
+  "colors": {
+    "primary": "#3B82F6"
+  }
+}
+```
+
+The primary color is automatically converted to an RGB CSS variable with opacity support, generating a full range of shades (50–950) from a single hex value.
+
+### Background Colors
+
+You can customize the background color for both light and dark modes:
+
+```json
+{
+  "colors": {
+    "primary": "#3B82F6",
+    "background": "#f8fafc",
+    "darkBackground": "#0f172a"
+  }
+}
+```
+
+- `background` — Light mode background (defaults to white `#ffffff`)
+- `darkBackground` — Dark mode background (defaults to zinc-950 `#09090b`)
+
+<Note>
+  Both background color options are optional. If not specified, the default values are used.
+</Note>
+
+## Typography
+
+### Fonts via Config
+
+The easiest way to change the primary font is through the config file using any [Google Font](https://fonts.google.com):
+
+```json
+{
+  "font": "Roboto"
+}
+```
+
+This loads the font from Google Fonts and applies it site-wide. Popular options:
+- `"Inter"` (default)
+- `"Roboto"`
+- `"Open Sans"`
+- `"Lato"`
+- `"Poppins"`
+- `"Nunito"`
+- `"Source Sans Pro"`
+
+<Note>
+  The font name must match the Google Fonts name exactly. The font will be loaded with weights 400, 500, 600, and 700.
+</Note>
+
+### Fonts via next/font
+
+For more control (custom weights, monospace font changes), update your `src/app/layout.tsx` — the only route file you'd need to touch:
+
+```tsx
+import { Poppins, Fira_Code } from 'next/font/google';
+
+const sans = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-inter',
+});
+
+const mono = Fira_Code({
+  subsets: ['latin'],
+  variable: '--font-mono',
+});
+
+const { RootLayout, generateMetadata } = createRootLayout({
+  fontClassNames: `${sans.variable} ${mono.variable}`,
+});
+```
+
+<Tip>
+  The CSS variable names `--font-inter` and `--font-mono` are what the Tailwind theme references. Use these exact variable names regardless of which font you choose.
+</Tip>
+
+## Logo
+
+Add your logo files to the `public` directory:
+
+```
+public/
+├── logo-light.svg  # For light mode
+└── logo-dark.svg   # For dark mode
+```
+
+Then update the config:
+
+```json
+{
+  "logo": {
+    "light": "/logo-light.svg",
+    "dark": "/logo-dark.svg"
+  }
+}
+```
+
+<Note>
+  If you only have one logo that works on both backgrounds, use the same path for both.
+</Note>
+
+## Navigation
+
+### Structure
+
+Navigation is organized into groups. Each group has a label and a list of page slugs that correspond to MDX file paths under `content/docs/`:
+
+```json
+{
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": [
+        "getting-started/introduction",
+        "getting-started/quickstart"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        "api/authentication",
+        "api/endpoints"
+      ]
+    }
+  ]
+}
+```
+
+The slug `"getting-started/introduction"` maps to the file `content/docs/getting-started/introduction.mdx`.
+
+### Root Page
+
+By default, the home page (`/`) renders the first page in your navigation. To use a different page:
+
+```json
+{
+  "rootPage": "getting-started/introduction"
+}
+```
+
+### Content Path
+
+By default, content is read from `content/docs/`. To use a different directory:
+
+```json
+{
+  "contentPath": "docs"
+}
+```
+
+### Topbar Links
+
+Add external links to the header:
+
+```json
+{
+  "topbarLinks": [
+    {
+      "name": "GitHub",
+      "url": "https://github.com/your-org/your-repo"
+    },
+    {
+      "name": "Discord",
+      "url": "https://discord.gg/your-server"
+    }
+  ]
+}
+```
+
+A link named "GitHub" automatically gets a GitHub icon.
+
+## Dark Mode
+
+Dark mode is enabled by default with system preference detection. Users can toggle between dark and light modes using the button in the header.
+
+The default theme is dark. The theme toggle, system detection, and class-based switching are all handled by the package automatically.
+
+## Custom MDX Components
+
+You can add your own MDX components that are available in all your documentation pages. Create a component file in your project:
+
+```tsx
+// src/components/MyAlert.tsx
+'use client';
+
+export function MyAlert({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="my-4 p-4 bg-purple-500/10 border border-purple-500/30 rounded-xl">
+      {children}
+    </div>
+  );
+}
+```
+
+Then pass it to both page handlers:
+
+```tsx
+// src/app/page.tsx
+import { createHomePage } from 'doc-platform/handlers/home-page';
+import { MyAlert } from '../components/MyAlert';
+
+const { HomePage, generateMetadata } = createHomePage({
+  customComponents: { MyAlert },
+});
+export { generateMetadata };
+export default HomePage;
+```
+
+```tsx
+// src/app/[...slug]/page.tsx
+import { createDocPage } from 'doc-platform/handlers/doc-page';
+import { MyAlert } from '../../components/MyAlert';
+
+const { DocPage, generateStaticParams, generateMetadata } = createDocPage({
+  customComponents: { MyAlert },
+});
+export { generateStaticParams, generateMetadata };
+export default DocPage;
+```
+
+Now use it in any MDX file:
+
+```mdx
+<MyAlert>
+  This is my custom alert!
+</MyAlert>
+```
+
+<Note>
+  Make sure to pass `customComponents` to both `createHomePage()` and `createDocPage()` so the component works on all pages.
+</Note>
+
+## Local Config Override
+
+For development or monorepo setups, you can create a `docs.config.local.json` file that takes priority over `docs.config.json`. This file is typically gitignored so each developer or deployment can have its own configuration.
+
+You can also set the `DOCS_CONFIG_PATH` environment variable to point to a config file at any path:
+
+```bash
+DOCS_CONFIG_PATH=./my-custom-config.json pnpm dev
+```

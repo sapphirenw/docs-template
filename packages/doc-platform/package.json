@@ -1,0 +1,65 @@
+{
+  "name": "doc-platform",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    },
+    "./styles": {
+      "style": "./src/styles/globals.css",
+      "default": "./src/styles/globals.css"
+    },
+    "./handlers/root-layout": {
+      "types": "./dist/handlers/root-layout.d.ts",
+      "default": "./src/handlers/root-layout.tsx"
+    },
+    "./handlers/home-page": {
+      "types": "./dist/handlers/home-page.d.ts",
+      "default": "./src/handlers/home-page.tsx"
+    },
+    "./handlers/doc-page": {
+      "types": "./dist/handlers/doc-page.d.ts",
+      "default": "./src/handlers/doc-page.tsx"
+    },
+    "./handlers/doc-layout": {
+      "types": "./dist/handlers/doc-layout.d.ts",
+      "default": "./src/handlers/doc-layout.tsx"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "peerDependencies": {
+    "next": ">=14.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "tailwindcss": ">=4.0.0"
+  },
+  "dependencies": {
+    "@mdx-js/react": "^3.1.1",
+    "@tailwindcss/typography": "^0.5.16",
+    "clsx": "^2.1.1",
+    "flexsearch": "^0.7.43",
+    "gray-matter": "^4.0.3",
+    "lucide-react": "^0.563.0",
+    "motion": "^12.33.0",
+    "next-mdx-remote": "^5.0.0",
+    "next-themes": "^0.4.6",
+    "rehype-pretty-code": "^0.14.1",
+    "remark-gfm": "^4.0.1",
+    "shiki": "^1.0.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  }
+}

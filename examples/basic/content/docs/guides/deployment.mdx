@@ -1,0 +1,450 @@
+---
+title: Deployment
+description: Set up your own docs site with the doc-platform package and deploy it
+---
+
+This guide covers how to create a new documentation site using the `doc-platform` package, and how to deploy it to production.
+
+## Create a New Docs Site
+
+### Prerequisites
+
+- Node.js 18+
+- pnpm (`corepack enable && corepack prepare pnpm@latest --activate`)
+
+### Scaffold the Project
+
+<Steps>
+  <Step title="Create a Next.js project">
+    Create a new directory and initialize it:
+
+    ```bash
+    mkdir my-docs && cd my-docs
+    pnpm init
+    ```
+  </Step>
+  <Step title="Install dependencies">
+    ```bash
+    pnpm add doc-platform next@^16 react@^19 react-dom@^19
+    pnpm add -D tailwindcss@^4 @tailwindcss/postcss@^4 postcss typescript @types/react @types/node
+    ```
+  </Step>
+  <Step title="Create config files">
+    You need three config files in your project root. These are boilerplate — you create them once and don't touch them again.
+
+    **`next.config.mjs`**:
+    ```javascript
+    const nextConfig = { transpilePackages: ['doc-platform'] };
+    export default nextConfig;
+    ```
+
+    **`postcss.config.js`**:
+    ```javascript
+    module.exports = {
+      plugins: {
+        '@tailwindcss/postcss': {},
+      },
+    };
+    ```
+
+    **`tsconfig.json`**:
+    ```json
+    {
+      "compilerOptions": {
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "incremental": true,
+        "plugins": [{ "name": "next" }],
+        "paths": { "@/*": ["./src/*"] }
+      },
+      "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+      "exclude": ["node_modules"]
+    }
+    ```
+  </Step>
+  <Step title="Create the route files">
+    Create four thin files under `src/app/`. These wire up the doc-platform handlers — each one is just a few lines.
+
+    **`src/app/globals.css`**:
+    ```css
+    @import "tailwindcss";
+    @import "doc-platform/styles";
+    ```
+
+    **`src/app/layout.tsx`**:
+    ```tsx
+    import { createRootLayout } from 'doc-platform/handlers/root-layout';
+    import { Inter, JetBrains_Mono } from 'next/font/google';
+    import './globals.css';
+
+    const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+    const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
+
+    const { RootLayout, generateMetadata } = createRootLayout({
+      fontClassNames: `${inter.variable} ${mono.variable}`,
+    });
+
+    export { generateMetadata };
+    export default RootLayout;
+    ```
+
+    **`src/app/page.tsx`**:
+    ```tsx
+    import { createHomePage } from 'doc-platform/handlers/home-page';
+
+    const { HomePage, generateMetadata } = createHomePage();
+
+    export { generateMetadata };
+    export default HomePage;
+    ```
+
+    **`src/app/[...slug]/layout.tsx`**:
+    ```tsx
+    import { createDocLayout } from 'doc-platform/handlers/doc-layout';
+
+    const { DocLayout } = createDocLayout();
+
+    export default DocLayout;
+    ```
+
+    **`src/app/[...slug]/page.tsx`**:
+    ```tsx
+    import { createDocPage } from 'doc-platform/handlers/doc-page';
+
+    const { DocPage, generateStaticParams, generateMetadata } = createDocPage();
+
+    export { generateStaticParams, generateMetadata };
+    export default DocPage;
+    ```
+  </Step>
+  <Step title="Add your docs.config.json">
+    Create `docs.config.json` in the project root. This is where all your branding, colors, and navigation live:
+
+    ```json
+    {
+      "name": "My Project Docs",
+      "description": "Documentation for My Project",
+      "logo": {
+        "light": "/logo.svg",
+        "dark": "/logo.svg"
+      },
+      "colors": {
+        "primary": "#3B82F6",
+        "accent": "#2563EB"
+      },
+      "navigation": [
+        {
+          "group": "Getting Started",
+          "pages": [
+            "getting-started/introduction"
+          ]
+        }
+      ],
+      "topbarLinks": [],
+      "footerSocials": {}
+    }
+    ```
+  </Step>
+  <Step title="Write your first page">
+    Create `content/docs/getting-started/introduction.mdx`:
+
+    ```mdx
+    ---
+    title: Introduction
+    description: Welcome to the docs
+    ---
+
+    Welcome to the documentation!
+
+    <Tip>
+      You can use all the built-in MDX components right away.
+    </Tip>
+    ```
+  </Step>
+  <Step title="Add scripts to package.json">
+    ```json
+    {
+      "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start"
+      }
+    }
+    ```
+  </Step>
+  <Step title="Run it">
+    ```bash
+    pnpm dev
+    ```
+
+    Open `http://localhost:3000` — your docs site is live.
+  </Step>
+</Steps>
+
+## Project Structure
+
+After setup, your project should look like this:
+
+```
+my-docs/
+├── content/
+│   └── docs/                # Your MDX documentation files
+│       └── getting-started/
+│           └── introduction.mdx
+├── public/                  # Static assets (logos, images)
+│   └── logo.svg
+├── src/
+│   └── app/
+│       ├── globals.css      # Imports doc-platform styles + Tailwind
+│       ├── layout.tsx       # Root layout (~10 lines)
+│       ├── page.tsx         # Home page (~5 lines)
+│       └── [...slug]/
+│           ├── layout.tsx   # Doc layout (~4 lines)
+│           └── page.tsx     # Doc page (~5 lines)
+├── docs.config.json         # All branding, colors, navigation
+├── next.config.mjs          # One-line transpile config
+├── postcss.config.js        # Tailwind v4 PostCSS
+├── tsconfig.json            # Standard Next.js TypeScript
+└── package.json
+```
+
+<Note>
+  The four route files under `src/app/` are boilerplate. You write them once during setup and don't modify them unless you need to pass custom MDX components or change fonts.
+</Note>
+
+## What You Control
+
+| You provide | Purpose |
+|-------------|---------|
+| `docs.config.json` | Site name, colors, navigation, links, logos |
+| `content/docs/**/*.mdx` | Your actual documentation pages |
+| `public/` | Logos and images |
+| `src/app/` (4 files) | Route wiring (boilerplate, written once) |
+
+All visual customization — colors, fonts, branding — flows from `docs.config.json`. You never need to edit Tailwind or CSS directly.
+
+## Custom Fonts
+
+The root layout accepts `fontClassNames` so you can use any Google Font:
+
+```tsx
+// src/app/layout.tsx
+import { Poppins, Fira_Code } from 'next/font/google';
+
+const sans = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-inter',
+});
+const mono = Fira_Code({ subsets: ['latin'], variable: '--font-mono' });
+
+const { RootLayout, generateMetadata } = createRootLayout({
+  fontClassNames: `${sans.variable} ${mono.variable}`,
+});
+```
+
+<Tip>
+  The CSS variable must be `--font-inter` for the sans font and `--font-mono` for monospace — these are what the Tailwind theme references.
+</Tip>
+
+## Custom MDX Components
+
+You can pass extra MDX components to the page handlers:
+
+```tsx
+// src/app/page.tsx
+import { createHomePage } from 'doc-platform/handlers/home-page';
+import { MyCustomComponent } from '../components/MyCustomComponent';
+
+const { HomePage, generateMetadata } = createHomePage({
+  customComponents: { MyCustomComponent },
+});
+
+export { generateMetadata };
+export default HomePage;
+```
+
+Then use `<MyCustomComponent>` in your MDX files.
+
+---
+
+## Production Build
+
+```bash
+pnpm build
+```
+
+This generates an optimized static build. All documentation pages are pre-rendered at build time.
+
+## Docker Deployment
+
+### Dockerfile
+
+```dockerfile
+FROM node:20-alpine AS base
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Dependencies
+FROM base AS deps
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+# Builder
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN pnpm build
+
+# Runner
+FROM base AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/content ./content
+COPY --from=builder /app/docs.config.json ./docs.config.json
+
+USER nextjs
+EXPOSE 3000
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+
+CMD ["node", "server.js"]
+```
+
+<Note>
+  To use standalone output, add `output: 'standalone'` to your `next.config.mjs`.
+</Note>
+
+### Docker Compose
+
+```yaml
+services:
+  docs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+```
+
+### Build and Run
+
+```bash
+docker compose up --build -d
+```
+
+Your docs are live at `http://localhost:3000`.
+
+## Vercel / Netlify
+
+Since this is a standard Next.js project, you can deploy to any platform that supports Next.js:
+
+- **Vercel**: Connect your repo and it deploys automatically
+- **Netlify**: Use the Next.js plugin
+- **Any Node.js host**: Run `pnpm build && pnpm start`
+
+No special configuration is needed beyond what's already in `next.config.mjs`.
+
+## CI/CD with GitHub Actions
+
+```yaml
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Deploy
+        # Add your deployment step here
+        run: echo "Deploy to your host"
+```
+
+## Updating Content
+
+Content changes only require editing MDX files and redeploying. No code changes are needed.
+
+To update documentation without rebuilding the Docker image, mount the content directory:
+
+```yaml
+services:
+  docs:
+    volumes:
+      - ./content:/app/content:ro
+      - ./docs.config.json:/app/docs.config.json:ro
+```
+
+<Note>
+  Content changes require a container restart when using static generation.
+</Note>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Styles not applying">
+    Make sure your `globals.css` imports Tailwind and the doc-platform styles in the correct order:
+    ```css
+    @import "tailwindcss";
+    @import "doc-platform/styles";
+    ```
+    Also verify that `postcss.config.js` uses `@tailwindcss/postcss` instead of the v3 `tailwindcss` plugin.
+  </Accordion>
+  <Accordion title="Components not rendering in MDX">
+    All built-in components (Callout, Tabs, Steps, etc.) work out of the box. If you're using custom components, make sure you pass them via the `customComponents` option in `createHomePage()` and `createDocPage()`.
+  </Accordion>
+  <Accordion title="Fonts not loading">
+    Ensure your font CSS variables match what the preset expects: `--font-inter` for sans-serif and `--font-mono` for monospace.
+  </Accordion>
+  <Accordion title="Config changes not reflecting">
+    Changes to `docs.config.json` require a dev server restart. Stop the server and run `pnpm dev` again.
+  </Accordion>
+</AccordionGroup>

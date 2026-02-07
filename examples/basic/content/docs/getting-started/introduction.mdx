@@ -1,0 +1,73 @@
+---
+title: Introduction
+description: A modern documentation platform built with Next.js and MDX
+---
+
+Welcome to the documentation! This platform is built to make creating beautiful, interactive documentation simple and enjoyable.
+
+## What is doc-platform?
+
+`doc-platform` is an npm package that provides a complete documentation system. You install it into a Next.js project, create a few thin route files, and provide your content as MDX files. All colors, fonts, navigation, and branding are driven by a single `docs.config.json` file.
+
+It's inspired by [Mintlify](https://mintlify.com) and [GitBook](https://gitbook.com), but you own and host everything yourself.
+
+<Tip>
+  This entire documentation site is built using doc-platform. What you're reading right now is an example project consuming the package.
+</Tip>
+
+## Key Features
+
+- **MDX Support** - Write Markdown and use React components
+- **Dark Mode** - Beautiful dark and light themes
+- **Search** - Lightning-fast search with keyboard shortcuts
+- **Responsive** - Looks great on all devices
+- **Components** - Rich set of documentation components
+- **Config-Driven** - All branding from a single JSON file
+- **Custom Fonts** - Use any Google Font
+- **Syntax Highlighting** - Dual-theme code blocks via Shiki
+
+## How It Works
+
+You provide:
+
+1. **`docs.config.json`** — site name, colors, navigation structure, links
+2. **`content/docs/**/*.mdx`** — your documentation pages
+3. **`public/`** — logos and images
+4. **4 route files in `src/app/`** — boilerplate that wires up the handlers (~5 lines each)
+
+The package provides everything else: layout, sidebar, search, table of contents, MDX components, and theming.
+
+## Quick Start
+
+<Steps>
+  <Step title="Install the package">
+    ```bash
+    pnpm add doc-platform next@^16 react@^19 react-dom@^19
+    ```
+  </Step>
+
+  <Step title="Create your route files">
+    Set up four thin files in `src/app/` that import handler factories from the package. See the [Quickstart](/getting-started/quickstart) for the exact code.
+  </Step>
+
+  <Step title="Add your config and content">
+    Create `docs.config.json` with your site name, colors, and navigation. Write your docs as MDX files in `content/docs/`.
+  </Step>
+
+  <Step title="Preview locally">
+    ```bash
+    pnpm dev
+    ```
+  </Step>
+</Steps>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" href="/getting-started/quickstart" icon="Rocket">
+    Get up and running in minutes with the full setup walkthrough.
+  </Card>
+  <Card title="Components" href="/components/overview" icon="Blocks">
+    Explore all the available MDX components for your documentation.
+  </Card>
+</CardGroup>
